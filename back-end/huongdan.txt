@@ -1,0 +1,6 @@
+apps chứa tất cả những gì liên quan đến code như controller, model
+app.js chứa các config cho ứng dụng, khởi tạo ứng dụng 
+apps/model thao tác với db
+apps/view thao tác với html
+apps/helpers cho các function dùng chung
+config chứa cấu hình db
