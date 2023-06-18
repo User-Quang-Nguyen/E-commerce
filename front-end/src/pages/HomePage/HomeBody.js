@@ -3,29 +3,17 @@ import { FaRobot, FaTshirt, FaHighlighter, FaShoppingBag, FaRing } from "react-i
 import { Button, Menu, Card } from 'antd';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../../styles.css'
+import '../../styles.css';
+import {sendToken} from '../../functions/function';
 
 const { Meta } = Card;
-function getItem(label, key, icon, children, type) {
+function getItem(label, key, icon) {
     return {
         key,
         icon,
-        children,
         label,
-        type,
     };
 }
-
-const items = [
-    getItem('Đồ chơi', '1', <FaRobot />),
-    getItem('Máy tính', '2', <DesktopOutlined />),
-    getItem('Điện thoại', '3', <PhoneOutlined />),
-    getItem('Thời trang', '5', <FaTshirt />),
-    getItem('Làm đẹp', '6', <FaHighlighter />),
-    getItem('Balo', '7', <FaShoppingBag />),
-    getItem('Trang sức', '8', <FaRing />),
-];
-
 
 const App = () => {
 
@@ -34,8 +22,11 @@ const App = () => {
     khi nhận được dữ liệu từ API và khi biến state thay đổi, 
     component sẽ được render lại để hiển thị dữ liệu mới. 
     */
+    const [categories, setCategory] = useState([]);
     const [objects, setObjects] = useState([]);
+    const [collapsed, setCollapsed] = useState(false);
     const [randomProducts, setRandomProduct] = useState([]);
+
     /* 
     Lưu ý rằng trong cả hai ví dụ trên, chúng ta đã sử dụng window.addEventListener 
     và window.removeEventListener để thêm và xóa sự kiện load vào window. 
@@ -53,7 +44,11 @@ const App = () => {
     }, []);
 
     const handleWindowLoad = () => {
-        axios.get("http://localhost:5000/data/getpriority")
+
+        sendToken();
+
+        // Get a list of popular products
+        axios.get("http://localhost:5000/product/popular")
             .then(response => {
                 // Xử lý dữ liệu nhận được từ API
                 setObjects(response.data);
@@ -63,20 +58,33 @@ const App = () => {
                 console.error(error);
             });
 
-        axios.get("http://localhost:5000/data/getrandom")
+        // Get regular product list
+        axios.get("http://localhost:5000/product/normal")
             .then(response => {
                 setRandomProduct(response.data);
             })
             .catch(error => {
-                // Xử lý lỗi nếu có
+                console.error(error);
+            });
+
+        // Get a list of product categories
+        axios.get("http://localhost:5000/product/category")
+            .then(response => {
+                setCategory(response.data);
+            })
+            .catch(error => {
                 console.error(error);
             });
     }
 
-    const [collapsed, setCollapsed] = useState(false);
+    const items = categories.map((category) => (
+        getItem(category.category_name, category.id, <FaRobot />)
+    ));
+
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
     };
+    
     return (
         <div style={{ display: 'flex' }}>
             <div
@@ -97,8 +105,6 @@ const App = () => {
                     {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                 </Button>
                 <Menu
-                    // defaultSelectedKeys={['1']}
-                    // defaultOpenKeys={['1']}
                     mode="inline"
                     theme="light"
                     inlineCollapsed={collapsed}

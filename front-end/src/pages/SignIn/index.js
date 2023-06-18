@@ -1,24 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, message } from 'antd';
 import axios from 'axios';
 import '../../styles.css';
-import FormItem from 'antd/es/form/FormItem';
 
 const SignIn = () => {
 
+  //variable "token" to store the token received
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+
   const onFinish = (values) => {
-    axios.post('http://localhost:5000/admin/login', values)
+    axios.post('http://localhost:5000/authentication/login', values)
       .then((response) => {
-        // Xử lý logic sau khi đăng nhập thành công
-        console.log(response.data);
         message.success('Đăng nhập thành công!', 3);
+        setToken(response.data.token);
       })
       .catch((error) => {
-        // Xử lý logic sau khi đăng nhập thất bại
         console.log(error.response.data);
         message.error('Đăng nhập thất bại!', 3);
       });
   };
+
+  //listen for changes from the variable state "token"
+  useEffect(() => {
+    localStorage.setItem('token', token);
+  }, [token]);
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -53,7 +58,7 @@ const SignIn = () => {
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
-              Submit
+              Đăng nhập
             </Button>
           </Form.Item>
             <p>Nếu chưa có tài khoản bấm <a href='http://localhost:3000/signup' >Đăng ký</a> </p>

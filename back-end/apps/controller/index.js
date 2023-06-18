@@ -1,8 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-router.use("/admin", require(__dirname + "/admin.js"));
-router.use("/blog", require(__dirname + "/blog.js"));
-router.use("/data", require(__dirname + "/data.js"));
+router.use("/authentication", require(__dirname + "/authenticationController.js"));
+router.use("/product", require(__dirname + "/productController.js"));
 
 module.exports = router;

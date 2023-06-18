@@ -4,9 +4,9 @@ import { Button, Form, Input, message } from 'antd';
 import { Navigate } from "react-router-dom";
 import '../../styles.css';
 import FormItem from 'antd/es/form/FormItem';
+import sleep from '../../functions/function';
 
 const SignUpForm = () => {
-
   const [login, setLogin] = useState(false);
   const [formData, setFormData] = useState({
     first_name: '',
@@ -25,26 +25,16 @@ const SignUpForm = () => {
   };
 
   const handleSubmit = async (formData) => {
-
-    // console.log(formData);
-    // // Xử lý logic đăng ký tài khoản
-    // axios.post('http://localhost:5000/admin/signup', formData)
-    //   .then((response) => {
-    //     console.log('Sign up successful:', response);
-    //   })
-    //   .catch((error) => {
-    //     console.log('Sign up failed:', error);
-    //   });
-
-    // setLogin(true);
     try {
       console.log(formData);
-      // Xử lý logic đăng ký tài khoản
-      const response = await axios.post('http://localhost:5000/admin/signup', formData);
+      const response = await axios.post('http://localhost:5000/authentication/signup', formData);
       console.log('Sign up successful:', response);
+      message.success('Đăng ký thành công!', 2);
+      await sleep(1000);
       setLogin(true);
     } catch (error) {
       console.log('Sign up failed:', error);
+      message.success('Đăng ký thất bại!', 3);
     }
   };
 
@@ -54,6 +44,7 @@ const SignUpForm = () => {
       <div className='modal-content'>
         <h1>Sign Up</h1>
 
+        {/* use to redirect website to sign in page when login = true */}
         {login && (
           <Navigate to="/signin" replace={true} />
         )}

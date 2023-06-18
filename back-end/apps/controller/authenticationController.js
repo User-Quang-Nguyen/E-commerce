@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var user_md = require("../models/user");
+var jwt = require("jsonwebtoken");
 
 router.post("/signup", function (req, res) {
     var user = req.body;
@@ -13,15 +14,12 @@ router.post("/signup", function (req, res) {
         gender: user.gender
     };
 
-    // console.log(req.params);
-
     var result = user_md.addUser(user);
     console.log(result);
     if (!result) {
-        // res.render("signup", {data: {error: "Error!"}});
         res.json({ message: "Success!" });
     } else {
-        res.json({ message: "Dang ki that bai" });
+        res.json({ message: "Sign up fail!" });
     }
 });
 
@@ -34,14 +32,28 @@ router.post("/login", function (req, res) {
     }
 
     user_md.checkUser(user)
-    .then((message) => {
-        // Đăng nhập thành công
-        res.status(200).json({ success: true, message: message });
+    .then((result) => {
+        // create and send token
+        var token = user_md.createToken(result);
+        res.status(200).json({ success: true, token});
     })
     .catch((error) => {
-        // Đăng nhập thất bại
         res.status(401).json({ success: false, message: error });
     });
+})
+
+router.post("/verify", function(req, res){
+     var token = req.body.token;
+    //  console.log(token);
+     user_md.verifyToken(token)
+        .then((result) => {
+            console.log("Xac thuc thanh cong");
+            console.log(result);
+        })
+        .catch((error) => {
+            console.log(error);
+
+        })
 })
 
 module.exports = router;
