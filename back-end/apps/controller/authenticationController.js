@@ -15,45 +15,51 @@ router.post("/signup", function (req, res) {
     };
 
     var result = user_md.addUser(user);
-    console.log(result);
     if (!result) {
-        res.json({ message: "Success!" });
+        res.json({ message: "Sign up success!" });
     } else {
         res.json({ message: "Sign up fail!" });
     }
 });
 
-router.post("/login", function (req, res) {
+router.post("/login", async function (req, res) {
     var user = req.body;
 
     user = {
         email: user.email,
         password: user.password
     }
-
-    user_md.checkUser(user)
-    .then((result) => {
-        // create and send token
-        var token = user_md.createToken(result);
-        res.status(200).json({ success: true, token});
-    })
-    .catch((error) => {
+    try {
+        var result = await user_md.checkUser(user)
+        // console.log(result);
+        if (result === "Đăng nhập thất bại") {
+            res.status(401).json({ success: false, message: error });
+        } else {
+            var token = user_md.createToken(result);
+            var data = {
+                "id": result.id,
+                "email": result.email,
+                "token": token
+            }
+            res.status(200).json({ success: true, data });
+        }
+    }
+    catch (error) {
+        console.log("Error");
         res.status(401).json({ success: false, message: error });
-    });
+    }
 })
 
-router.post("/verify", function(req, res){
-     var token = req.body.token;
-    //  console.log(token);
-     user_md.verifyToken(token)
-        .then((result) => {
-            console.log("Xac thuc thanh cong");
-            console.log(result);
-        })
-        .catch((error) => {
-            console.log(error);
+router.post("/verify", async function (req, res) {
+    try {
+        var token = req.body.token;
+        var result = await user_md.verifyToken(token);
+        // console.log(result);
+        res.status(200).json({message: true, result});
+    } catch (error) {
+        console.log(error);
+    }
+});
 
-        })
-})
 
 module.exports = router;

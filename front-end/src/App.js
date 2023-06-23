@@ -10,7 +10,6 @@ function App() {
       <div className="App">
         <Routes>
           {/* sendToken(); */}
-          
           <Route path="/" element={<HomePage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />

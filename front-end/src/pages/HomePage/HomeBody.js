@@ -4,7 +4,7 @@ import { Button, Menu, Card } from 'antd';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles.css';
-import {sendToken} from '../../functions/function';
+import { sendToken } from '../../functions/function';
 
 const { Meta } = Card;
 function getItem(label, key, icon) {
@@ -15,13 +15,14 @@ function getItem(label, key, icon) {
     };
 }
 
-const App = () => {
+const HomeBody = ({ isLoggedIn }) => {
 
     /* 
     biến state jsonData sẽ được cập nhật 
     khi nhận được dữ liệu từ API và khi biến state thay đổi, 
     component sẽ được render lại để hiển thị dữ liệu mới. 
     */
+    const [login, setLogin] = useState(false);
     const [categories, setCategory] = useState([]);
     const [objects, setObjects] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
@@ -35,17 +36,12 @@ const App = () => {
     */
 
     useEffect(() => {
-        window.addEventListener("load", handleWindowLoad);
-        return () => {
-            window.removeEventListener("load", handleWindowLoad);
-        };
-        // handleWindowLoad();
-
+        handleWindowLoad();
     }, []);
 
     const handleWindowLoad = () => {
 
-        sendToken();
+        // sendToken();
 
         // Get a list of popular products
         axios.get("http://localhost:5000/product/popular")
@@ -84,7 +80,7 @@ const App = () => {
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
     };
-    
+
     return (
         <div style={{ display: 'flex' }}>
             <div
@@ -138,7 +134,7 @@ const App = () => {
                             <Card
                                 hoverable
                                 style={{
-                                    width: 164,
+                                    width: 180,
                                 }}
                                 cover={<img alt="example" src={randomProduct.image} />}
                                 key={randomProduct.id}
@@ -154,4 +150,4 @@ const App = () => {
         </div>
     );
 };
-export default App;
+export default HomeBody;

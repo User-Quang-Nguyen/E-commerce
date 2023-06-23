@@ -3,22 +3,23 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export const sendToken = () => {
+export const sendToken = async () => {
     var token = localStorage.getItem('token');
     var data = {
-        'token' : token,
+        'token': token,
     }
     // console.log(data);
-    if (data === '') return;
-    else {
-        axios.post("http://localhost:5000/authentication/verify", data)
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error("Error");
-            })
-    }
+    try {
+        if (data.token === null) return { message: false };
+        else {
+          const response = await axios.post("http://localhost:5000/authentication/verify", data);
+          const decodedData = response.data;
+          return decodedData;
+        }
+      } catch (error) {
+        console.error("Error", error);
+        return { message: false };
+      }
 }
 
 export default sleep;

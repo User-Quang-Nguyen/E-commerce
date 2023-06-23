@@ -1,0 +1,108 @@
+CREATE TABLE Users(
+id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+first_name char(20),
+last_name char(20),
+date_of_birth date,
+phone_number char(11),
+city char(30),
+address char(50),
+gender tinyint,
+email char(100),
+password char(20),
+user_type tinyint default 0,
+created_at datetime
+);
+
+CREATE TABLE Category(
+id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+category_name char(100),
+category_type tinyint,
+);
+
+CREATE TABLE Product(
+id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+category_id int NOT NULL, 
+name char(30),
+price decimal(10,3),
+description varchar(1000),
+quantity int,
+);
+
+CREATE TABLE Image(
+id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+product_id int,
+image varchar(200),
+
+CONSTRAINT fk_image FOREIGN KEY (product_id) REFERENCES Product(id)
+);
+
+CREATE TABLE Product_Category(
+id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+product_id int,
+category_id int,
+
+CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES Category(id),
+CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES Product(id)
+);
+
+CREATE TABLE Voucher(
+id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+product_id int NOT NULL,
+code char(10),
+price decimal(10,3),
+
+CONSTRAINT fk_voucher FOREIGN KEY (product_id) REFERENCES Product(id)
+);
+
+CREATE TABLE Orders(
+id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+user_id int,
+total_money float,
+created_at datetime,
+
+CONSTRAINT fk_order FOREIGN KEY (user_id) REFERENCES Users(id)
+);
+
+CREATE TABLE List_Orders(
+id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+order_id int NOT NULL,
+product_id int NOT NULL,
+quantity int,
+name char(30),
+price decimal(10,3),
+
+CONSTRAINT fk_list_orders_order FOREIGN KEY (order_id) REFERENCES Orders(id),
+CONSTRAINT fk_list_orders_product FOREIGN KEY (product_id) REFERENCES Product(id)
+);
+
+INSERT INTO users(first_name, last_name, date_of_birth, phone_number, city, address, gender, email, password) values(
+	'Nguyen','Quang','2002-10-18','0326961431','Thanh Hoa','Hoang Trach, Hoang Hoa',1,'admin','admin'
+);
+INSERT INTO category(category_name, category_type) values ('Đồ chơi', 1);
+insert into category(category_name, category_type) values ('Máy tính', 1);
+insert into category(category_name, category_type) values ('Điện thoại', 1);
+insert into category(category_name, category_type) values ('Thời trang', 1);
+insert into category(category_name, category_type) values ('Làm đẹp', 1);
+insert into category(category_name, category_type) values ('Balo', 1);
+insert into category(category_name, category_type) values ('Trang sức', 1);
+INSERT INTO category(category_name, category_type) values ('Giảm giá', 2);
+INSERT INTO category(category_name, category_type) values ('Nổi bật', 2);
+INSERT INTO category(category_name, category_type) values ('Thông dụng', 2);
+
+insert into product(name,price,description,quantity) values('Robot đồ chơi',100000,'Sản phẩm dành cho các bé',100),
+('Váy ngắn',2000000,'Váy đẹp phù hợp cho học sinh',100),
+insert into product_category(product_id, category_id) value (1, 1);
+
+insert into image(product_id, image) value(2, "https://i.imgur.com/Cpl0QgO.jpg");
+insert into image(product_id, image) value(2, "https://i.imgur.com/l5RszNJ.jpg");
+insert into image(product_id, image) value(2, "https://i.imgur.com/ahhBUxA.jpg");
+insert into image(product_id, image) value(2, "https://i.imgur.com/E2ZEtvL.jpg");
+insert into image(product_id, image) value(2, "https://i.imgur.com/9OCuUrT.jpg");
+insert into image(product_id, image) value(2, "https://i.imgur.com/jjsHPUs.jpg");
+
+insert into image(product_id, image) value(1, "https://i.imgur.com/Cpl0QgO.jpg");
+insert into image(product_id, image) value(1, "https://i.imgur.com/l5RszNJ.jpg");
+insert into image(product_id, image) value(1, "https://i.imgur.com/ahhBUxA.jpg");
+insert into image(product_id, image) value(1, "https://i.imgur.com/E2ZEtvL.jpg");
+insert into image(product_id, image) value(1, "https://i.imgur.com/9OCuUrT.jpg");
+insert into image(product_id, image) value(1, "https://i.imgur.com/jjsHPUs.jpg");
