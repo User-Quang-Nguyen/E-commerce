@@ -18,7 +18,7 @@ function createToken(data) {
     return token;
 }
 
-async function verifyToken(token) {
+async function loginVerification(token) {
     const secretKey = "jwtsecrect";
     try {
         const result = await jwt.verify(token, secretKey, (err, decode) => {
@@ -77,5 +77,5 @@ module.exports = {
     addUser: addUser,
     checkUser: checkUser,
     createToken: createToken,
-    verifyToken: verifyToken,
+    loginVerification: loginVerification,
 }

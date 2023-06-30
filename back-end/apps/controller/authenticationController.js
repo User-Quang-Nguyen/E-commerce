@@ -50,16 +50,15 @@ router.post("/login", async function (req, res) {
     }
 })
 
-router.post("/verify", async function (req, res) {
+router.post("/loginVerification", async function (req, res) {
     try {
         var token = req.body.token;
-        var result = await user_md.verifyToken(token);
+        var result = await user_md.loginVerification(token);
         // console.log(result);
         res.status(200).json({message: true, result});
     } catch (error) {
         console.log(error);
     }
 });
-
 
 module.exports = router;

@@ -2,8 +2,8 @@ import React from 'react';
 import Header from './HomeHeader';
 import Body from './HomeBody';
 import Footer from './HomeFooter';
-import { sendToken } from '../../functions/function';
 import { useState, useEffect } from 'react';
+import { sendToken } from '../../functions/function';
 
 const HomePage = () => {
   const [loggedIn, setLoggedIn] = useState({
@@ -14,9 +14,8 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-
       const result = await sendToken();
-      // console.log(result);
+      console.log(result);
       // setLoggedIn(result.message);
       setLoggedIn({
         message: result.message,
@@ -33,7 +32,6 @@ const HomePage = () => {
     }
   }, []);
 
-  // console.log(loggedIn.message);
   return (
     <div>
       <Header isLoggedIn={loggedIn} />

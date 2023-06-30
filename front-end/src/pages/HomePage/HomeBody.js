@@ -4,7 +4,7 @@ import { Button, Menu, Card } from 'antd';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles.css';
-import { sendToken } from '../../functions/function';
+import { useNavigate } from 'react-router-dom';
 
 const { Meta } = Card;
 function getItem(label, key, icon) {
@@ -17,31 +17,18 @@ function getItem(label, key, icon) {
 
 const HomeBody = ({ isLoggedIn }) => {
 
-    /* 
-    biến state jsonData sẽ được cập nhật 
-    khi nhận được dữ liệu từ API và khi biến state thay đổi, 
-    component sẽ được render lại để hiển thị dữ liệu mới. 
-    */
+    const navigate = useNavigate();
     const [login, setLogin] = useState(false);
     const [categories, setCategory] = useState([]);
     const [objects, setObjects] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
     const [randomProducts, setRandomProduct] = useState([]);
 
-    /* 
-    Lưu ý rằng trong cả hai ví dụ trên, chúng ta đã sử dụng window.addEventListener 
-    và window.removeEventListener để thêm và xóa sự kiện load vào window. 
-    Điều này đảm bảo rằng chúng ta chỉ gọi hàm handleWindowLoad một lần 
-    khi component được tải và tránh gọi lại nếu component được render lại.
-    */
-
     useEffect(() => {
         handleWindowLoad();
     }, []);
 
     const handleWindowLoad = () => {
-
-        // sendToken();
 
         // Get a list of popular products
         axios.get("http://localhost:5000/product/popular")
@@ -71,6 +58,10 @@ const HomeBody = ({ isLoggedIn }) => {
             .catch(error => {
                 console.error(error);
             });
+    }
+
+    const getProductDetail = (id) => {
+        navigate("/products?id=" + id);
     }
 
     const items = categories.map((category) => (
@@ -110,44 +101,52 @@ const HomeBody = ({ isLoggedIn }) => {
             <div style={{ flex: '9' }}>
                 <h3>Các sản phẩm nổi bật</h3>
                 <div style={{ overflowX: 'auto', maxWidth: '1287px' }}>
-                    <div style={{ display: 'flex', gap: '16px' }}>
+                    <div style={{ display: 'flex', gap: '16px', padding: '10px' }}>
                         {objects.map((object) => (
-                            <Card
-                                hoverable
-                                style={{
-                                    width: 180,
-                                }}
-                                cover={<img alt="example" src={object.image} />}
-                                key={object.id}
-                            >
-                                <Meta title={object.name} description="" />
-                                <p>Price: {object.price} VND</p>
-                                <a href="http://localhost:3000/signin"><Button type="primary">Thêm vào giỏ</Button></a>
-                            </Card>
+                            <div key={object.id}>
+                                {/* <Link key={object.id} to={`/products?id=${object.id}`}></Link> */}
+                                <Card
+                                    hoverable
+                                    onClick={() => getProductDetail(object.id)}
+                                    style={{
+                                        width: 180,
+                                    }}
+                                    cover={<img alt="example" src={object.image} />}
+                                    key={object.id}
+                                >
+                                    <Meta title={object.name} description="" />
+                                    <p>Price: {object.price} VND</p>
+                                    <a href=""><Button type="primary">Thêm vào giỏ</Button></a>
+                                </Card>
+                            </div>
                         ))}
                     </div>
                 </div>
                 <h3>Có thể bạn quan tâm</h3>
                 <div >
-                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', padding: 10 }}>
                         {randomProducts.map((randomProduct) => (
-                            <Card
-                                hoverable
-                                style={{
-                                    width: 180,
-                                }}
-                                cover={<img alt="example" src={randomProduct.image} />}
-                                key={randomProduct.id}
-                            >
-                                <Meta title={randomProduct.name} description="" />
-                                <p>Price: {randomProduct.price} VND</p>
-                                <a href="http://localhost:3000/signin"><Button type="primary">Thêm vào giỏ</Button></a>
-                            </Card>
+                            <div key={randomProduct.id}>
+                                {/* <Link key={randomProduct.id} to={`/products?id=${randomProduct.id}`}></Link> */}
+                                <Card
+                                    hoverable
+                                    onClick={() => getProductDetail(randomProduct.product_id)}
+                                    style={{
+                                        width: 180,
+                                    }}
+                                    cover={<img alt="example" src={randomProduct.image} />}
+                                    key={randomProduct.id}
+                                >
+                                    <Meta title={randomProduct.name} description="" />
+                                    <p>Price: {randomProduct.price} VND</p>
+                                    <a href=""><Button type="primary">Thêm vào giỏ</Button></a>
+                                </Card>
+                            </div>
                         ))}
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 export default HomeBody;
