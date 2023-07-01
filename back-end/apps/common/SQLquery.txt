@@ -45,6 +45,17 @@ CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES Category(id),
 CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES Product(id)
 );
 
+CREATE TABLE Cart(
+	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	user_id int,
+	product_id int,
+	quantity int,
+	address varchar(200),
+
+	CONSTRAINT fk_cart_user FOREIGN KEY (user_id) REFERENCES users(id),
+	CONSTRAINT fk_cart_product FOREIGN KEY (product_id) REFERENCES product(id)
+)
+
 CREATE TABLE Voucher(
 id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 product_id int NOT NULL,

@@ -2,8 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CheckLogin } from '../../functions/function';
-import { Button, Card, Input, Tooltip } from 'antd';
-import NumbericInput from '../../components/NumbericInput'
+import { Button, Card, InputNumber, Tooltip } from 'antd';
 import { sendToken } from '../../functions/function';
 import './styles.css';
 
@@ -16,6 +15,9 @@ function CardDetail() {
     const [infos, setInfos] = useState([]);
     const [number, setNumber] = useState(null); // number of product
     const [address, setAddress] = useState('');
+    const changeNumber = (num) => {
+        setNumber(num);
+    }
 
     useEffect(() => {
 
@@ -83,14 +85,9 @@ function CardDetail() {
                                 <h3>{info.description}</h3>
                                 <p>Giá: {info.price} VND</p>
                                 <p>Số lượng:
-                                    <NumbericInput
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={number}
-                                        onChange={setNumber}
-                                    />
-                                    (có tổng {info.quantity} sản phẩm trong kho)</p>
+                                    <InputNumber style={{ width: '150px', height: 'auto', margin: '0px 20px' }} addonBefore="+" addonAfter="VND" defaultValue={1} onChange={(value) => changeNumber(value)} />
+                                    (có tổng {info.quantity} sản phẩm trong kho)
+                                </p>
                             </div>
                         ))}
                         <p>Vận chuyển tới: {address}</p>

@@ -69,6 +69,14 @@
     color: #888;
 }
 
+.title {
+    width: 800px;
+    color: white;
+    padding: auto;
+    text-align: center;
+    height: 40px;
+}
+
 h1 {
     text-align: center;
 }
