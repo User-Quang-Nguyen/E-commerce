@@ -107,9 +107,10 @@ const HomeBody = ({ isLoggedIn }) => {
                                 {/* <Link key={object.id} to={`/products?id=${object.id}`}></Link> */}
                                 <Card
                                     hoverable
-                                    onClick={() => getProductDetail(object.id)}
+                                    onClick={() => getProductDetail(object.product_id)}
                                     style={{
                                         width: 180,
+                                        height: 250
                                     }}
                                     cover={<img alt="example" src={object.image} />}
                                     key={object.id}

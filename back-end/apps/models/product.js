@@ -7,7 +7,6 @@ function getData(query) {
         conn.query(query, function (err, result) {
             if (err) reject(err);
             else {
-                // console.log(result);
                 resolve(result);
             }
         });

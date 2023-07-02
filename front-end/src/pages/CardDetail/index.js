@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CheckLogin } from '../../functions/function';
 import { Button, Card, InputNumber, Tooltip } from 'antd';
 import { sendToken } from '../../functions/function';
 import './styles.css';
@@ -15,33 +14,39 @@ function CardDetail() {
     const [infos, setInfos] = useState([]);
     const [number, setNumber] = useState(null); // number of product
     const [address, setAddress] = useState('');
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [userId, setUserId] = useState();
     const changeNumber = (num) => {
         setNumber(num);
     }
 
     useEffect(() => {
 
-        // try {
-        //     const loggedIn = await CheckLogin();
-        //     console.log(loggedIn);
-        //     if (loggedIn.message === true) {
-        //         const apiGetUserInfo = "http://localhost:5000/user/information?id=" + loggedIn.id;
-        //         axios.get(apiGetUserInfo)
-        //             .then((response) => {
-        //                 var Address = response.data[0].address + ',' + response.data[0].city;
-        //                 setAddress(Address);
-        //             })
-        //             .catch((error) => {
-        //                 console.error(error);
-        //             })
-        //     } else {
-        //         console.log("Chưa đăng nhập");
-        //     }
-        // } catch (error) {
-        //     console.log("Error");
-        // }
-
-
+        const fetchData = async () => {
+            try {
+                const result = await sendToken();
+                console.log(result);
+                setLoggedIn(result.message);
+                setUserId(result.result.userID);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+        console.log(loggedIn);
+        console.log(userId);
+        if (loggedIn === true) {
+            const apiGetAddressShip = "http://localhost:5000/user/information?id=" + userId;
+            axios.get(apiGetAddressShip)
+                .then(response => {
+                    console.log(response.data);
+                    var addr = response.data.address + response.data.city;
+                    setAddress(addr);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
 
         const apiGetProductDetail = "http://localhost:5000/product/productdetail?id=" + id;
         axios.get(apiGetProductDetail)
@@ -61,6 +66,7 @@ function CardDetail() {
             .catch(error => {
                 console.log(error);
             })
+
     }, [])
 
     return (
@@ -84,10 +90,10 @@ function CardDetail() {
                                 <h1>{info.name}</h1>
                                 <h3>{info.description}</h3>
                                 <p>Giá: {info.price} VND</p>
-                                <p>Số lượng:
-                                    <InputNumber style={{ width: '150px', height: 'auto', margin: '0px 20px' }} addonBefore="+" addonAfter="VND" defaultValue={1} onChange={(value) => changeNumber(value)} />
-                                    (có tổng {info.quantity} sản phẩm trong kho)
-                                </p>
+                                Số lượng:
+                                <InputNumber style={{ width: '150px', height: 'auto', margin: '0px 20px' }} addonAfter="VND" defaultValue={1} onChange={(value) => changeNumber(value)} />
+                                (có tổng {info.quantity} sản phẩm trong kho)
+
                             </div>
                         ))}
                         <p>Vận chuyển tới: {address}</p>

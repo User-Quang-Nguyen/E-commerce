@@ -117,3 +117,6 @@ insert into image(product_id, image) value(1, "https://i.imgur.com/ahhBUxA.jpg")
 insert into image(product_id, image) value(1, "https://i.imgur.com/E2ZEtvL.jpg");
 insert into image(product_id, image) value(1, "https://i.imgur.com/9OCuUrT.jpg");
 insert into image(product_id, image) value(1, "https://i.imgur.com/jjsHPUs.jpg");
+
+INSERT INTO `tmdt`.`cart` (`user_id`, `product_id`, `quantity`) VALUES ('1', '1', '3');
+INSERT INTO `tmdt`.`cart` (`user_id`, `product_id`, `quantity`) VALUES ('1', '2', '3');

@@ -8,7 +8,7 @@ const Cart = () => {
         <div>
             <Header />
             <Body />
-            <Footer total={230000} ship={20000} vou={20000}/>
+            <Footer total={230000} ship={20000} vou={-20000} />
         </div>
     )
 }

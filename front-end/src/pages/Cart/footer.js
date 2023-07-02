@@ -23,7 +23,6 @@ const Footer = ({ total, ship, vou }) => {
                     <Select
                         labelInValue
                         defaultValue={{ value: 'tructiep', label: 'Thanh toán khi nhận hàng' }}
-                        // style={{ width: 120 }}
                         onChange={(value) => handleChange(value)}
                         options={[
                             {
@@ -38,8 +37,8 @@ const Footer = ({ total, ship, vou }) => {
                     />
                 </Col>
                 <Col>
-                    <p>Tong tien hang: {total} VND</p>
-                    <p>Thue VAT: {mul(total, 0.1)} VND</p>
+                    <p>Tổng tiền hàng: {total} VND</p>
+                    <p>Thuế VAT: {mul(total, 0.1)} VND</p>
                     <p>Phí vận chuyển: {ship} VND</p>
                     <p>Voucher: {vou} VND</p>
                     <span>Tổng thanh toán: </span>

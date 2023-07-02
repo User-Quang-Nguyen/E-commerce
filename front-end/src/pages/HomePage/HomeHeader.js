@@ -22,11 +22,19 @@ const HomeHeader = ({ isLoggedIn }) => {
           <Search id='enterButton' placeholder="Tìm kiếm" enterButton />
         </Col>
         <Col>
-          <a href="http://localhost:3000/signin">
-            <Button className='icon' style={{ marginLeft: '100px' }} type="link" icon={<ShoppingCartOutlined style={{ fontSize: '30px' }} />}>
-              {/* <p>Giỏ hàng</p> */}
-            </Button>
-          </a>
+          {isLoggedIn.message ? (
+            <a href="http://localhost:3000/cart">
+              <Button className='icon' style={{ marginLeft: '100px' }} type="link" icon={<ShoppingCartOutlined style={{ fontSize: '30px' }} />}>
+                {/* <p>Giỏ hàng</p> */}
+              </Button>
+            </a>
+          ) : (
+            <a href="http://localhost:3000/signin">
+              <Button className='icon' style={{ marginLeft: '100px' }} type="link" icon={<ShoppingCartOutlined style={{ fontSize: '30px' }} />}>
+                {/* <p>Giỏ hàng</p> */}
+              </Button>
+            </a>
+          )}
         </Col>
         <Col>
           {isLoggedIn.message ? (
