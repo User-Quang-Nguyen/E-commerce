@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var getData = require('./responseData')
 var data_md = require('../models/product')
+var math_md = require('../calculator/math')
 
 router.get("/", function (req, res) {
     var id = req.query.id;
@@ -37,13 +38,15 @@ router.get("/", function (req, res) {
                 product.id;`;
                 data_md.getData(getProductById)
                     .then((product) => {
+                        var total = math_md.mul(item.quantity, product[0].price);
                         var productData = {
                             id: item.id,
                             image: product[0].image,
                             name: product[0].name,
                             price: product[0].price,
                             category_name: product[0].category_name,
-                            quantity: item.quantity
+                            quantity: item.quantity,
+                            total: total
                         };
                         productDetail.push(productData);
                         if (productDetail.length === data.length) {

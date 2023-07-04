@@ -5,9 +5,14 @@ import { mul } from '../functions/math';
 const Table_product = ({ data }) => {
     const [tableData, setTableData] = React.useState(data);
 
+    React.useEffect(() => {
+        setTableData(data);
+    }, [data]);
+
     const handleQuantityChange = async (id, value) => {
         const updatedData = tableData.map((item) => {
             if (item.id === id) {
+                console.log(id);
                 return {
                     ...item,
                     quantity: value,
@@ -60,9 +65,9 @@ const Table_product = ({ data }) => {
             title: 'Thành tiền',
             dataIndex: 'total',
             key: 'total',
-            render: (text, record) => (
-                mul(record.price, record.quantity)
-            )
+            // render: (text, record) => (
+            //     mul(record.price, record.quantity)
+            // )
         },
         {
             title: 'Action',
@@ -74,7 +79,6 @@ const Table_product = ({ data }) => {
 
 
     return (
-
         <Table
             columns={columns}
             dataSource={tableData}

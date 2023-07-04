@@ -41,12 +41,13 @@ const dataTest = [
 const Body = () => {
     const [items, setItems] = useState([]);
     const [address, setAddress] = useState([]);
+    const [userID, setUserID] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const result = await sendToken();
-
+                console.log(result);
                 var apiGetShippingInfo = "http://localhost:5000/user/addressForCart?id=" + result.result.userID;
                 const shippingInfoRes = await axios.get(apiGetShippingInfo)
                 setAddress(shippingInfoRes.data);
@@ -55,16 +56,16 @@ const Body = () => {
                 const bodyInfoResponse = await axios.get(apiGetBodyInfo)
                 console.log(bodyInfoResponse.data);
                 setItems(bodyInfoResponse.data);
-
             } catch (error) {
                 console.log(error);
             }
         };
 
         fetchData();
-
-        console.log("data" + items);
     }, []);
+
+    useEffect(() => { }, [items])
+
     var shippingAddress = address.phoneNumber + ', ' + address.fullName + ', ' + address.address + '.';
     return (
         <div>

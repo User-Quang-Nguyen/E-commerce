@@ -10,7 +10,6 @@ export const sendToken = async () => {
   var data = {
     'token': token,
   }
-  // console.log(data);
   try {
     if (data.token === null) return { message: false };
     else {
@@ -23,28 +22,5 @@ export const sendToken = async () => {
     return { message: false };
   }
 }
-
-export const CheckLogin = () => {
-
-  const [loggedIn, setLoggedIn] = useState({
-    message: false,
-    id: '',
-    email: '',
-  });
-
-  async function fetchData() {
-    const result = await sendToken();
-    setLoggedIn({
-      message: result.message,
-      id: result.result.userID,
-      email: result.result.userEmail,
-    });
-  };
-  useEffect(async () => {
-    await fetchData();
-  }, []);
-
-  return loggedIn;
-};
 
 export default sleep;

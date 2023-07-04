@@ -5,7 +5,7 @@ import { Button, Card, InputNumber, Tooltip } from 'antd';
 import { sendToken } from '../../functions/function';
 import './styles.css';
 
-function CardDetail() {
+function CardDetail({ isLoggedIn }) {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
@@ -14,33 +14,16 @@ function CardDetail() {
     const [infos, setInfos] = useState([]);
     const [number, setNumber] = useState(null); // number of product
     const [address, setAddress] = useState('');
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [userId, setUserId] = useState();
     const changeNumber = (num) => {
         setNumber(num);
     }
 
     useEffect(() => {
-
-        const fetchData = async () => {
-            try {
-                const result = await sendToken();
-                console.log(result);
-                setLoggedIn(result.message);
-                setUserId(result.result.userID);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchData();
-        console.log(loggedIn);
-        console.log(userId);
-        if (loggedIn === true) {
-            const apiGetAddressShip = "http://localhost:5000/user/information?id=" + userId;
+        if (isLoggedIn.message === true) {
+            const apiGetAddressShip = "http://localhost:5000/user/information?id=" + isLoggedIn.id;
             axios.get(apiGetAddressShip)
                 .then(response => {
-                    console.log(response.data);
-                    var addr = response.data.address + response.data.city;
+                    var addr = response.data[0].address + ', ' + response.data[0].city;
                     setAddress(addr);
                 })
                 .catch(error => {
@@ -52,7 +35,6 @@ function CardDetail() {
         axios.get(apiGetProductDetail)
             .then(response => {
                 setInfos(response.data);
-                // console.log(response.data);
             })
             .catch(error => {
                 console.log(error);
@@ -66,8 +48,7 @@ function CardDetail() {
             .catch(error => {
                 console.log(error);
             })
-
-    }, [])
+    }, [isLoggedIn])
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#CCFFFF' }}>
@@ -93,10 +74,14 @@ function CardDetail() {
                                 Số lượng:
                                 <InputNumber style={{ width: '150px', height: 'auto', margin: '0px 20px' }} addonAfter="VND" defaultValue={1} onChange={(value) => changeNumber(value)} />
                                 (có tổng {info.quantity} sản phẩm trong kho)
-
                             </div>
                         ))}
-                        <p>Vận chuyển tới: {address}</p>
+                        {isLoggedIn.message ? (
+                            <p>Vận chuyển tới: {address}</p>
+                        ) : (
+                            <p>Vận chuyển tới: </p>
+                        )}
+
                         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
                             <Button type="primary" danger onClick={() => alert("Thêm giỏ")}>
                                 Thêm vào giỏ hàng

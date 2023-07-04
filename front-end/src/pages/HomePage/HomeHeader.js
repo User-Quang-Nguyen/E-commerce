@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Layout, Row, Col, Input, Button } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import '../../styles.css'
@@ -9,7 +9,6 @@ const { Search } = Input;
 
 const HomeHeader = ({ isLoggedIn }) => {
   // console.log(isLoggedIn);
-
   return (
     <Header className="header">
       <Row justify="space-between" align="middle">
