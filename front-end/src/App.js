@@ -31,7 +31,7 @@ function App() {
   }, []);
 
   useEffect(() => { }, [loggedIn])
-
+  console.log(loggedIn);
   return (
     <Router>
       <div className="App">
@@ -40,7 +40,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/products" element={<Product isLoggedIn={loggedIn} />} />
-          <Route path='/cart' element={<Cart />} />
+          <Route path='/cart' element={<Cart isLoggedIn={loggedIn} />} />
         </Routes>
       </div>
     </Router>

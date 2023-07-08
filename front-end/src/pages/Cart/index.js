@@ -1,14 +1,29 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import Header from "./header";
 import Body from "./body";
 import Footer from "./footer";
+import axios from "axios";
 
-const Cart = () => {
+const Cart = ({ isLoggedIn }) => {
+    const [total, setTotal] = useState();
+    useEffect(() => {
+        var totalMoney = "http://localhost:5000/cart/total?id=" + isLoggedIn.id;
+        axios.get(totalMoney)
+            .then((response) => {
+                var num = 0;
+                response.data.map((obj) => {
+                    num = num + obj.quantity * obj.price;
+                })
+                setTotal(num)
+            })
+            .catch((error) => { console.log(error) })
+    }, [total, isLoggedIn])
+    console.log(total);
     return (
         <div>
             <Header />
-            <Body />
-            <Footer total={230000} ship={20000} vou={-20000} />
+            <Body isLoggedIn={isLoggedIn} />
+            <Footer total={total} ship={20000} vou={-20000} />
         </div>
     )
 }

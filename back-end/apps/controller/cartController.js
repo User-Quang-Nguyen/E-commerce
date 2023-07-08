@@ -63,4 +63,19 @@ router.get("/", function (req, res) {
         })
 })
 
+router.put("/updateitem", function (req, res) {
+
+    var itemId = req.query.itemId;
+    var quantity = req.query.quantity;
+
+    var updateCardItem = "Update cart set quantity = " + quantity + " where id = " + itemId;
+    getData.responseData(updateCardItem, req, res);
+})
+
+router.get("/total", function(req, res) {
+    var id = req.query.id;
+    var getTotalMoney = "select cart.user_id, product.price, cart.quantity from cart inner join product on product.id = cart.product_id where cart.user_id = " + id;
+    getData.responseData(getTotalMoney, req, res);
+})
+
 module.exports = router;

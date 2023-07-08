@@ -38,23 +38,19 @@ const dataTest = [
 ];
 
 
-const Body = () => {
+const Body = ({ isLoggedIn }) => {
     const [items, setItems] = useState([]);
     const [address, setAddress] = useState([]);
-    const [userID, setUserID] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await sendToken();
-                console.log(result);
-                var apiGetShippingInfo = "http://localhost:5000/user/addressForCart?id=" + result.result.userID;
+                var apiGetShippingInfo = "http://localhost:5000/user/addressForCart?id=" + isLoggedIn.id;
                 const shippingInfoRes = await axios.get(apiGetShippingInfo)
                 setAddress(shippingInfoRes.data);
 
-                var apiGetBodyInfo = "http://localhost:5000/cart?id=" + result.result.userID;
+                var apiGetBodyInfo = "http://localhost:5000/cart?id=" + isLoggedIn.id;
                 const bodyInfoResponse = await axios.get(apiGetBodyInfo)
-                console.log(bodyInfoResponse.data);
                 setItems(bodyInfoResponse.data);
             } catch (error) {
                 console.log(error);
@@ -62,7 +58,7 @@ const Body = () => {
         };
 
         fetchData();
-    }, []);
+    }, [isLoggedIn]);
 
     useEffect(() => { }, [items])
 

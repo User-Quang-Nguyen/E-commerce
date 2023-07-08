@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Row, Select, Button } from "antd";
 import { sum, mul } from "../../functions/math";
 
@@ -15,6 +15,7 @@ const handleCancel = () => {
 }
 
 const Footer = ({ total, ship, vou }) => {
+
     return (
         <div style={{ backgroundColor: '#d9d9d9' }}>
             <Row justify="space-between" style={{ padding: '10px' }}>

@@ -23,7 +23,6 @@ const HomeBody = ({ isLoggedIn }) => {
     const [objects, setObjects] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
     const [randomProducts, setRandomProduct] = useState([]);
-
     useEffect(() => {
         handleWindowLoad();
     }, []);

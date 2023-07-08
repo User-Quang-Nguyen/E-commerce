@@ -1,5 +1,6 @@
 var db = require('../common/database');
 var conn = db.getConnection();
+var math_md = require('../calculator/math')
 
 // get list of products with input of 1 query
 function getData(query) {
@@ -14,5 +15,5 @@ function getData(query) {
 }
 
 module.exports = {
-    getData: getData
+    getData: getData,
 }
