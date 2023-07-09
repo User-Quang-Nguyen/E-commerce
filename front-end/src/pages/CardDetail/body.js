@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Button, Card, InputNumber, Tooltip } from 'antd';
+import { Button, Card, InputNumber, Tooltip, message } from 'antd';
 import './styles.css';
 
 function Body({ isLoggedIn }) {
@@ -11,10 +11,24 @@ function Body({ isLoggedIn }) {
 
     const [images, setImages] = useState([]);
     const [infos, setInfos] = useState([]);
-    const [number, setNumber] = useState(null); // number of product
+    const [number, setNumber] = useState(1); // number of product
     const [address, setAddress] = useState('');
     const changeNumber = (num) => {
         setNumber(num);
+    }
+
+    const addToCart = (userId, productId, quantity) => {
+        var formData = {
+            userId: userId,
+            productId: productId,
+            quantity: quantity,
+        }
+
+        axios.post("http://localhost:5000/cart/addtocart", formData)
+            .then((response) => {
+                message.success("Thêm giỏ thành công !")
+            })
+            .catch((error) => { console.log(error) })
     }
 
     useEffect(() => {
@@ -73,19 +87,27 @@ function Body({ isLoggedIn }) {
                                 Số lượng:
                                 <InputNumber style={{ width: '150px', height: 'auto', margin: '0px 20px' }} addonAfter="VND" defaultValue={1} onChange={(value) => changeNumber(value)} />
                                 (có tổng {info.quantity} sản phẩm trong kho)
+                                {isLoggedIn.message ? (
+                                    <div>
+                                        <p>Vận chuyển tới: {address}</p>
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
+                                            <Button type="primary" danger onClick={() => addToCart(isLoggedIn.id, info.id, number)}>
+                                                Thêm vào giỏ hàng
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <p>Vận chuyển tới: </p>
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
+                                            <Button type="primary" danger>
+                                                Thêm vào giỏ hàng
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ))}
-                        {isLoggedIn.message ? (
-                            <p>Vận chuyển tới: {address}</p>
-                        ) : (
-                            <p>Vận chuyển tới: </p>
-                        )}
-
-                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
-                            <Button type="primary" danger onClick={() => alert("Thêm giỏ")}>
-                                Thêm vào giỏ hàng
-                            </Button>
-                        </div>
                     </Card>
                 </div>
             </Card>

@@ -6,6 +6,7 @@ import axios from "axios";
 
 const Cart = ({ isLoggedIn }) => {
     const [total, setTotal] = useState();
+    const [onChange, setOnChange] = useState(0);
     useEffect(() => {
         var totalMoney = "http://localhost:5000/cart/total?id=" + isLoggedIn.id;
         axios.get(totalMoney)
@@ -23,7 +24,7 @@ const Cart = ({ isLoggedIn }) => {
         <div>
             <Header />
             <Body isLoggedIn={isLoggedIn} />
-            <Footer total={total} ship={20000} vou={-20000} />
+            <Footer total={total} ship={20000} vou={-20000} userId={isLoggedIn.id} />
         </div>
     )
 }

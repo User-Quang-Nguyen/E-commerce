@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));

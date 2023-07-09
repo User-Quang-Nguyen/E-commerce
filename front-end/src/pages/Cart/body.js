@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table_product from "../../components/list";
 import axios from "axios";
-import { sendToken } from "../../functions/function";
 const dataTest = [
     {
         id: 1,

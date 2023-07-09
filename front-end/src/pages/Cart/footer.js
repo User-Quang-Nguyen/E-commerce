@@ -1,20 +1,42 @@
 import React, { useState } from "react";
-import { Col, Row, Select, Button } from "antd";
+import { Col, Row, Select, Button, message } from "antd";
+import axios from "axios";
 import { sum, mul } from "../../functions/math";
+import sleep from '../../functions/function'
 
 const handleChange = (value) => {
     console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
 };
 
-const handleOk = () => {
-    alert("OK")
-}
 
-const handleCancel = () => {
-    alert("Cancel")
-}
+const Footer = ({ total, ship, vou, userId }) => {
 
-const Footer = ({ total, ship, vou }) => {
+    const handleOk = () => {
+        axios.post(`http://localhost:5000/cart/users/${userId}/setorder`)
+            .then((response) => { console.log(response) })
+            .catch((error) => { console.log(error) })
+
+        axios.delete(`http://localhost:5000/cart/users/${userId}/delete`)
+            .then(async (response) => {
+                message.success("Đặt hàng thành công!", 2);
+                await sleep(2000);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.log(error);
+                message.error("Đặt hàng thất bại!");
+            })
+    }
+
+    const handleCancel = () => {
+        axios.delete(`http://localhost:5000/cart/users/${userId}/delete`)
+            .then((response) => {
+                window.location.href = '/';
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
     return (
         <div style={{ backgroundColor: '#d9d9d9' }}>
@@ -51,7 +73,7 @@ const Footer = ({ total, ship, vou }) => {
                             Đặt hàng
                         </Button>
                         <Button type="primary" danger onClick={handleCancel}>
-                            Hủy
+                            Hủy đơn
                         </Button>
                     </p>
                 </Col>

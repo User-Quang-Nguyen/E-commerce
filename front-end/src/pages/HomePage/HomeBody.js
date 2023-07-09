@@ -3,6 +3,7 @@ import { FaRobot, FaTshirt, FaHighlighter, FaShoppingBag, FaRing } from "react-i
 import { Button, Menu, Card } from 'antd';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { message } from 'antd';
 import '../../styles.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,9 +24,24 @@ const HomeBody = ({ isLoggedIn }) => {
     const [objects, setObjects] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
     const [randomProducts, setRandomProduct] = useState([]);
+
     useEffect(() => {
         handleWindowLoad();
     }, []);
+
+    const handleAddToCart = (userId, productId, quantity) => {
+        var formData = {
+            userId: userId,
+            productId: productId,
+            quantity: quantity,
+        }
+
+        axios.post("http://localhost:5000/cart/addtocart", formData)
+            .then((response) => {
+                message.success("Thêm giỏ thành công !")
+            })
+            .catch((error) => { console.log(error) })
+    }
 
     const handleWindowLoad = () => {
 
@@ -103,10 +119,12 @@ const HomeBody = ({ isLoggedIn }) => {
                     <div style={{ display: 'flex', gap: '16px', padding: '10px' }}>
                         {objects.map((object) => (
                             <div key={object.id}>
-                                {/* <Link key={object.id} to={`/products?id=${object.id}`}></Link> */}
                                 <Card
                                     hoverable
-                                    onClick={() => getProductDetail(object.product_id)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        getProductDetail(object.product_id);
+                                    }}
                                     style={{
                                         width: 180,
                                         height: 250
@@ -116,8 +134,17 @@ const HomeBody = ({ isLoggedIn }) => {
                                 >
                                     <Meta title={object.name} description="" />
                                     <p>Price: {object.price} VND</p>
-                                    <a href=""><Button type="primary">Thêm vào giỏ</Button></a>
+                                    <a href="" onClick={
+                                        (e) => {
+                                            e.stopPropagation();
+                                            handleAddToCart(isLoggedIn.id, object.id, 1);
+                                        }
+                                    }
+                                    >
+                                        <Button type="primary">Thêm vào giỏ</Button>
+                                    </a>
                                 </Card>
+
                             </div>
                         ))}
                     </div>
