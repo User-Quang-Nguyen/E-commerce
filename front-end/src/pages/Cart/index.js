@@ -8,7 +8,7 @@ const Cart = ({ isLoggedIn }) => {
     const [total, setTotal] = useState();
     const [onChange, setOnChange] = useState(0);
     useEffect(() => {
-        var totalMoney = "http://localhost:5000/cart/total?id=" + isLoggedIn.id;
+        var totalMoney = `http://localhost:5000/users/${isLoggedIn.id}/cart/total`;
         axios.get(totalMoney)
             .then((response) => {
                 var num = 0;

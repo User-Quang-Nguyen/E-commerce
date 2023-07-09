@@ -12,11 +12,11 @@ const handleChange = (value) => {
 const Footer = ({ total, ship, vou, userId }) => {
 
     const handleOk = () => {
-        axios.post(`http://localhost:5000/cart/users/${userId}/setorder`)
+        axios.post(`http://localhost:5000/users/${userId}/cart/order`)
             .then((response) => { console.log(response) })
             .catch((error) => { console.log(error) })
 
-        axios.delete(`http://localhost:5000/cart/users/${userId}/delete`)
+        axios.delete(`http://localhost:5000/users/${userId}/cart`)
             .then(async (response) => {
                 message.success("Đặt hàng thành công!", 2);
                 await sleep(2000);
@@ -29,7 +29,7 @@ const Footer = ({ total, ship, vou, userId }) => {
     }
 
     const handleCancel = () => {
-        axios.delete(`http://localhost:5000/cart/users/${userId}/delete`)
+        axios.delete(`http://localhost:5000/users/${userId}/cart`)
             .then((response) => {
                 window.location.href = '/';
             })

@@ -36,7 +36,7 @@ const HomeBody = ({ isLoggedIn }) => {
             quantity: quantity,
         }
 
-        axios.post("http://localhost:5000/cart/addtocart", formData)
+        axios.post("http://localhost:5000/users/cart/addtocart", formData)
             .then((response) => {
                 message.success("Thêm giỏ thành công !")
             })
@@ -46,7 +46,7 @@ const HomeBody = ({ isLoggedIn }) => {
     const handleWindowLoad = () => {
 
         // Get a list of popular products
-        axios.get("http://localhost:5000/product/popular")
+        axios.get("http://localhost:5000/products/popular")
             .then(response => {
                 // Xử lý dữ liệu nhận được từ API
                 setObjects(response.data);
@@ -57,7 +57,7 @@ const HomeBody = ({ isLoggedIn }) => {
             });
 
         // Get regular product list
-        axios.get("http://localhost:5000/product/normal")
+        axios.get("http://localhost:5000/products/normal")
             .then(response => {
                 setRandomProduct(response.data);
             })
@@ -66,7 +66,7 @@ const HomeBody = ({ isLoggedIn }) => {
             });
 
         // Get a list of product categories
-        axios.get("http://localhost:5000/product/category")
+        axios.get("http://localhost:5000/products/category")
             .then(response => {
                 setCategory(response.data);
             })
@@ -134,10 +134,10 @@ const HomeBody = ({ isLoggedIn }) => {
                                 >
                                     <Meta title={object.name} description="" />
                                     <p>Price: {object.price} VND</p>
-                                    <a href="" onClick={
+                                    <a onClick={
                                         (e) => {
                                             e.stopPropagation();
-                                            handleAddToCart(isLoggedIn.id, object.id, 1);
+                                            handleAddToCart(isLoggedIn.id, object.product_id, 1);
                                         }
                                     }
                                     >
@@ -154,10 +154,12 @@ const HomeBody = ({ isLoggedIn }) => {
                     <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', padding: 10 }}>
                         {randomProducts.map((randomProduct) => (
                             <div key={randomProduct.id}>
-                                {/* <Link key={randomProduct.id} to={`/products?id=${randomProduct.id}`}></Link> */}
                                 <Card
                                     hoverable
-                                    onClick={() => getProductDetail(randomProduct.product_id)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        getProductDetail(randomProduct.product_id);
+                                    }}
                                     style={{
                                         width: 180,
                                     }}
@@ -166,7 +168,13 @@ const HomeBody = ({ isLoggedIn }) => {
                                 >
                                     <Meta title={randomProduct.name} description="" />
                                     <p>Price: {randomProduct.price} VND</p>
-                                    <a href=""><Button type="primary">Thêm vào giỏ</Button></a>
+                                    <a onClick={
+                                        (e) => {
+                                            e.stopPropagation();
+                                            handleAddToCart(isLoggedIn.id, randomProduct.product_id, 1);
+                                        }
+                                    }><Button type="primary">Thêm vào giỏ</Button>
+                                    </a>
                                 </Card>
                             </div>
                         ))}

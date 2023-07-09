@@ -24,7 +24,7 @@ function Body({ isLoggedIn }) {
             quantity: quantity,
         }
 
-        axios.post("http://localhost:5000/cart/addtocart", formData)
+        axios.post("http://localhost:5000/users/cart/addtocart", formData)
             .then((response) => {
                 message.success("Thêm giỏ thành công !")
             })
@@ -33,7 +33,7 @@ function Body({ isLoggedIn }) {
 
     useEffect(() => {
         if (isLoggedIn.message === true) {
-            const apiGetAddressShip = "http://localhost:5000/user/information?id=" + isLoggedIn.id;
+            const apiGetAddressShip = `http://localhost:5000/users/${isLoggedIn.id}/address`;
             axios.get(apiGetAddressShip)
                 .then(response => {
                     var addr = response.data[0].address + ', ' + response.data[0].city;
@@ -44,7 +44,7 @@ function Body({ isLoggedIn }) {
                 })
         }
 
-        const apiGetProductDetail = "http://localhost:5000/product/productdetail?id=" + id;
+        const apiGetProductDetail = `http://localhost:5000/products/${id}/detail`;
         axios.get(apiGetProductDetail)
             .then(response => {
                 setInfos(response.data);
@@ -53,7 +53,7 @@ function Body({ isLoggedIn }) {
                 console.log(error);
             })
 
-        const apiGetImage = "http://localhost:5000/product/productdetail/image?id=" + id;
+        const apiGetImage = `http://localhost:5000/products/${id}/image`;
         axios.get(apiGetImage)
             .then(response => {
                 setImages(response.data);
