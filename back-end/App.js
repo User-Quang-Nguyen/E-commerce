@@ -12,12 +12,6 @@ app.use(cors());
 app.use(bodyParse.json());
 app.use(bodyParse.urlencoded({extended: true}));
 
-// app.set("views", __dirname + "/apps/views");
-// app.engine('html', engines.mustache);
-// app.set('view engine', 'html');
-// app.set("view engine", "ejs");
-
-
 app.use("/static", express.static(__dirname + "/public"));
 
 app.use(require(__dirname + "/apps/controller"));

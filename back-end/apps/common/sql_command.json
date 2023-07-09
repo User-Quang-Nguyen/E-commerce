@@ -1,0 +1,3 @@
+{
+    "getProductById": "SELECT MIN(image.image) AS image, product.name, product.price, Category.category_nameFROM product INNER JOIN image ON image.product_id = product.id INNER JOIN product_category ON product_category.product_id = product.id INNER JOIN Category ON Category.id = product_category.category_id WHERE product.id = ` + item.product_id + `GROUP BY product.id;"
+}

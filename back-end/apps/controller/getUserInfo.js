@@ -4,14 +4,14 @@ var jwt = require("jsonwebtoken");
 var getData = require("./responseData")
 var data_md = require('../models/product');
 
-router.get("/information", function (req, res) {
-    var id = req.query.id;
+router.get("/:userId/address", function (req, res) {
+    var id = req.params.userId;
     var query = `Select id, first_name, last_name, address, city from users where id =` + id;
     getData.responseData(query, req, res);
 })
 
-router.get("/addressForCart", function (req, res) {
-    var id = req.query.id;
+router.get("/:userId/delivery", function (req, res) {
+    var id = req.params.userId;
     var query = `select first_name, last_name, phone_number, city, address from users where id = ` + id;
     data_md.getData(query)
         .then((data) => {

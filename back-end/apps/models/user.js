@@ -29,7 +29,6 @@ async function loginVerification(token) {
                     'userID': decode.id,
                     'userEmail': decode.email,
                 };
-                // console.log("Xac thuc thanh cong");
                 return info;
             }
         }

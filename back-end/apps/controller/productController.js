@@ -28,14 +28,14 @@ router.get("/category", function (req, res) {
     getData.responseData(getCategories, req, res);
 });
 
-router.get("/productdetail", function (req, res) {
-    var id = req.query.id;
+router.get("/:productId/detail", function (req, res) {
+    var id = req.params.productId;
     var getProductDetail = `Select * from product where id = ` + id;
     getData.responseData(getProductDetail, req, res);
 })
 
-router.get("/productdetail/image", function (req, res) {
-    var id = req.query.id;
+router.get("/:productId/image", function (req, res) {
+    var id = req.params.productId;
     var getImage = `select * from image where product_id = ` + id;
     getData.responseData(getImage, req, res);
 })
