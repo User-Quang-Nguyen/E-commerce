@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var getData = require('./responseData')
-var data_md = require('../models/product')
+var data_md = require('../models/mysql')
 var math_md = require('../calculator/math');
 
 router.get("/:userId/cart/infor", function (req, res) {
@@ -72,10 +71,10 @@ router.post("/cart", async function (req, res) {
         var result = await data_md.getData(existenceCheck);
         if (result.length === 0) {
             var add = "INSERT INTO cart(user_id, product_id, quantity) VALUES (" + info.userId + "," + info.productId + "," + info.quantity + ")";
-            var result1 = await getData.responseData(add, req, res);
+            var result1 = await data_md.responseData(add, req, res);
         } else {
             var update = "UPDATE cart SET quantity =" + info.quantity + " WHERE user_id=" + info.userId + " AND product_id=" + info.productId;
-            var result2 = await getData.responseData(update, req, res);
+            var result2 = await data_md.responseData(update, req, res);
         }
     } catch (error) {
         console.log(error);
@@ -90,7 +89,7 @@ router.put("/cartitems", async function (req, res) {
     }
     try {
         var updateCartItem = `update cart set quantity = ${info.quantity} WHERE id = ${info.cartItem}`;
-        var result = await getData.responseData(updateCartItem, req, res);
+        var result = await data_md.responseData(updateCartItem, req, res);
     } catch (error) {
         res.status(401).json({ "message": error });
     }
