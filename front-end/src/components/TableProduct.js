@@ -13,9 +13,12 @@ const Table_product = ({ data }) => {
     const handleQuantityChange = async (id, value) => {
         const updatedData = tableData.map((item) => {
             if (item.id === id) {
-                console.log(id);
-                var query = "http://localhost:5000/cart/updateitem?itemId=" + id + "&quantity=" + value;
-                axios.put(query)
+                const formData = {
+                    id: id,
+                    quantity: value,
+                }
+                var query = `http://localhost:5000/users/cartitems`;
+                axios.put(query, formData)
                     .then((respone) => {
                     })
                     .catch((error) => { console.log(error) })

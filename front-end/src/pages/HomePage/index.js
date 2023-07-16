@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './HomeHeader';
+import Header from './Header';
 import Body from './HomeBody';
 import Footer from './HomeFooter';
 

@@ -2,41 +2,42 @@ import React, { useState } from "react";
 import { Col, Row, Select, Button, message } from "antd";
 import axios from "axios";
 import { sum, mul } from "../../functions/math";
-import sleep from '../../functions/function'
+import sleep from '../../functions/extension'
 
 const handleChange = (value) => {
-    console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
+    console.log(value);
 };
 
-
 const Footer = ({ total, ship, vou, userId }) => {
+    const handleOk = async () => {
+        try {
+            const orderResponse = await axios.post(`http://localhost:5000/users/${userId}/cart/order`);
+            const cartResponse = await axios.delete(`http://localhost:5000/users/${userId}/cart`);
 
-    const handleOk = () => {
-        axios.post(`http://localhost:5000/users/${userId}/cart/order`)
-            .then((response) => { console.log(response) })
-            .catch((error) => { console.log(error) })
-
-        axios.delete(`http://localhost:5000/users/${userId}/cart`)
-            .then(async (response) => {
+            if (orderResponse.status === 200 && cartResponse.status === 200) {
                 message.success("Đặt hàng thành công!", 2);
                 await sleep(2000);
                 window.location.reload();
-            })
-            .catch((error) => {
-                console.log(error);
-                message.error("Đặt hàng thất bại!");
-            })
-    }
+            } else {
+                throw new Error("Something went wrong");
+            }
+        } catch (error) {
+            message.error("Đặt hàng thất bại!");
+        }
+    };
 
-    const handleCancel = () => {
-        axios.delete(`http://localhost:5000/users/${userId}/cart`)
-            .then((response) => {
-                window.location.href = '/';
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+    const handleCancel = async () => {
+        try {
+            const response = await axios.delete(`http://localhost:5000/users/${userId}/cart`);
+            if (response.status === 200) {
+                window.location.href = "/";
+            } else {
+                throw new Error("Something went wrong");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div style={{ backgroundColor: '#d9d9d9' }}>

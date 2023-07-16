@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../HomePage/HomeHeader"
+import Header from "../HomePage/Header"
 import Body from './body'
 
 const CartDetail = ({ isLoggedIn }) => {

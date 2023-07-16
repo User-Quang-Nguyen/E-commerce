@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Button, Form, Input, message } from 'antd';
 import { Navigate } from "react-router-dom";
-import '../../styles.css';
+import '../../asset/styles.css';
 import FormItem from 'antd/es/form/FormItem';
-import sleep from '../../functions/function';
+import sleep from '../../functions/extension';
 
 const SignUpForm = () => {
   const [login, setLogin] = useState(false);
@@ -26,14 +26,11 @@ const SignUpForm = () => {
 
   const handleSubmit = async (formData) => {
     try {
-      console.log(formData);
       const response = await axios.post('http://localhost:5000/authentication/signup', formData);
-      console.log('Sign up successful:', response);
       message.success('Đăng ký thành công!', 2);
       await sleep(1000);
       setLogin(true);
     } catch (error) {
-      console.log('Sign up failed:', error);
       message.success('Đăng ký thất bại!', 3);
     }
   };
@@ -44,11 +41,10 @@ const SignUpForm = () => {
       <div className='modal-content'>
         <h1>Sign Up</h1>
 
-        {/* use to redirect website to sign in page when login = true */}
         {login && (
           <Navigate to="/signin" replace={true} />
         )}
-        
+
         <Form
           name="basic"
           labelCol={{ span: 8 }}
@@ -63,7 +59,7 @@ const SignUpForm = () => {
             name="first_name"
             value={formData.first_name}
             onChange={handleChange}
-            required
+          // required
           >
             <Input />
           </Form.Item>
@@ -73,7 +69,7 @@ const SignUpForm = () => {
             name="last_name"
             value={formData.last_name}
             onChange={handleChange}
-            required
+          // required
           >
             <Input />
           </Form.Item>
@@ -83,7 +79,7 @@ const SignUpForm = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            required
+          // required
           >
             <Input />
           </Form.Item>
@@ -93,25 +89,29 @@ const SignUpForm = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            required
+          // required
           >
             <Input.Password />
           </Form.Item>
 
-            <Form.Item>
-              <label htmlFor="gender">Gender:</label>
+          <Form.Item>
+            <span style={{ display: 'inline-block' }}>
+              <label htmlFor="gender">Gender: </label>
+            </span>
+            <span style={{ display: 'inline-block' }}>
               <select
                 name="gender"
                 id="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                required
+              // required
               >
                 <option value="">Select gender</option>
                 <option value="1">Male</option>
                 <option value="0">Female</option>
               </select>
-            </Form.Item>
+            </span>
+          </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit" >

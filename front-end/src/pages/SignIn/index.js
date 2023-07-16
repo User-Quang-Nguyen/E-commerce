@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, message } from 'antd';
 import { Navigate } from "react-router-dom";
-import sleep from '../../functions/function';
+import sleep from '../../functions/extension';
 import axios from 'axios';
-import '../../styles.css';
+import '../../asset/styles.css';
 
 const SignIn = () => {
-
   //variable "token" to store the token received
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [login, setLogin] = useState(false);

@@ -98,3 +98,85 @@ input {
 button {
     padding: 10px;
 }
+
+.signup-form {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh
+}
+
+.display-content {
+    display: flex;
+    width: fit-content;
+}
+
+.image-gallery {
+    text-align: center;
+}
+
+.main-image {
+    width: 400px;
+    height: 300px;
+}
+
+.thumbnail-images {
+    display: flex;
+}
+
+.thumbnail-image {
+    width: 80px;
+    height: 60px;
+    margin-right: 10px;
+}
+
+.container-body-cd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #CCFFFF;
+}
+
+.input-number {
+    width: 150px;
+    height: auto;
+    margin: 0px 20px;
+}
+
+.display-center {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}

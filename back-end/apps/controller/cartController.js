@@ -45,13 +45,22 @@ router.get("/:userId/cart/infor", function (req, res) {
         })
 })
 
-router.get("/:userId/cart/total", function (req, res) {
+router.get("/:userId/cart/total", async function (req, res) {
     var id = req.params.userId;
     var getTotalMoney = "select cart.user_id, product.price, cart.quantity from cart inner join product on product.id = cart.product_id where cart.user_id = " + id;
-    getData.responseData(getTotalMoney, req, res);
+    try {
+        const total = await data_md.getData(getTotalMoney);
+        var num = 0;
+        total.map((item) => {
+            num = num + math_md.mul(item.price, item.quantity);
+        })
+        res.status(200).json(num);
+    } catch (error) {
+        res.status(400).json({ "message": error });
+    }
 })
 
-router.post("/cart/addtocart", async function (req, res) {
+router.post("/cart", async function (req, res) {
     var info = req.body;
     info = {
         userId: info.userId,
@@ -70,6 +79,20 @@ router.post("/cart/addtocart", async function (req, res) {
         }
     } catch (error) {
         console.log(error);
+    }
+})
+
+router.put("/cartitems", async function (req, res) {
+    var info = req.body;
+    info = {
+        cartItem: info.id,
+        quantity: info.quantity,
+    }
+    try {
+        var updateCartItem = `update cart set quantity = ${info.quantity} WHERE id = ${info.cartItem}`;
+        var result = await getData.responseData(updateCartItem, req, res);
+    } catch (error) {
+        res.status(401).json({ "message": error });
     }
 })
 

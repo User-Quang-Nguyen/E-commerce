@@ -1,14 +1,13 @@
 import React from 'react';
 import { Layout, Row, Col, Input, Button } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import '../../styles.css'
+import '../../asset/styles.css'
 import myLogo from './logo192.png';
 
 const { Header } = Layout;
 const { Search } = Input;
 
 const HomeHeader = ({ isLoggedIn }) => {
-  // console.log(isLoggedIn);
   return (
     <Header className="header">
       <Row justify="space-between" align="middle">
@@ -24,24 +23,20 @@ const HomeHeader = ({ isLoggedIn }) => {
           {isLoggedIn.message ? (
             <a href="http://localhost:3000/cart">
               <Button className='icon' style={{ marginLeft: '100px' }} type="link" icon={<ShoppingCartOutlined style={{ fontSize: '30px' }} />}>
-                {/* <p>Giỏ hàng</p> */}
               </Button>
             </a>
           ) : (
             <a href="http://localhost:3000/signin">
               <Button className='icon' style={{ marginLeft: '100px' }} type="link" icon={<ShoppingCartOutlined style={{ fontSize: '30px' }} />}>
-                {/* <p>Giỏ hàng</p> */}
               </Button>
             </a>
           )}
         </Col>
         <Col>
           {isLoggedIn.message ? (
-            // <a href="http://localhost:3000/signin">
             <Button className='icon' type="link" icon={<UserOutlined style={{ fontSize: '30px' }} />}>
               <p>{isLoggedIn.email}</p>
             </Button>
-            // </a>
           ) : (
             <a href="http://localhost:3000/signin">
               <Button className='icon' type="link" icon={<UserOutlined style={{ fontSize: '30px' }} />}>

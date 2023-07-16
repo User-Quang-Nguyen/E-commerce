@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Table_product from "../../components/list";
+import Table_product from "../../components/TableProduct";
 import axios from "axios";
 
 const Body = ({ isLoggedIn }) => {
