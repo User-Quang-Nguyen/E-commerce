@@ -11,7 +11,7 @@ const handleChange = (value) => {
 
 const PaymentInfo = ({ total, ship, vou, userId }) => {
     const navigate = useNavigate();
-    const handleOk = async () => {
+    const handleOrder = async () => {
         try {
             const orderResponse = await axios.post(`http://localhost:5000/users/${userId}/cart/order`);
             message.success("Đặt hàng thành công!", 2);
@@ -57,7 +57,7 @@ const PaymentInfo = ({ total, ship, vou, userId }) => {
                         {sum(total, mul(total, 0.1), ship, vou)} VND
                     </span>
                     <p>
-                        <Button type="primary" onClick={handleOk} >
+                        <Button type="primary" onClick={handleOrder} >
                             Đặt hàng
                         </Button>
                         <Button type="primary" danger onClick={handleCancel}>
