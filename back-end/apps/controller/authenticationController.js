@@ -38,7 +38,6 @@ router.post("/login", async function (req, res) {
             var token = user_md.createToken(result);
             var data = {
                 "id": result.id,
-                "email": result.email,
                 "token": token
             }
             res.status(200).json({ success: true, data });
@@ -54,8 +53,7 @@ router.post("/loginVerification", async function (req, res) {
     try {
         var token = req.body.token;
         var result = await user_md.loginVerification(token);
-        // console.log(result);
-        res.status(200).json({message: true, result});
+        res.status(200).json({ message: true, result });
     } catch (error) {
         console.log(error);
     }

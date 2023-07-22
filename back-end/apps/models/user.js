@@ -11,7 +11,6 @@ const queryPromise = util.promisify(conn.query).bind(conn);
 function createToken(data) {
     const payload = {
         id: data.id,
-        email: data.email,
     }
     const secretKey = "jwtsecrect";
     const token = jwt.sign(payload, secretKey, { expiresIn: '1000h' });
@@ -27,7 +26,6 @@ async function loginVerification(token) {
             } else {
                 const info = {
                     'userID': decode.id,
-                    'userEmail': decode.email,
                 };
                 return info;
             }

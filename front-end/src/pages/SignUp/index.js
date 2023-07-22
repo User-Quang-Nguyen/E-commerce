@@ -4,10 +4,10 @@ import { Button, Form, Input, message } from 'antd';
 import { Navigate } from "react-router-dom";
 import '../../asset/styles.css';
 import FormItem from 'antd/es/form/FormItem';
-import sleep from '../../functions/extension';
+import sleep from '../../functions/handleToken';
 
 const SignUpForm = () => {
-  const [login, setLogin] = useState(false);
+  const [isLoggedIn, setLogin] = useState(false);
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -16,7 +16,7 @@ const SignUpForm = () => {
     gender: ''
   });
 
-  const handleChange = (e) => {
+  const changeData = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -41,7 +41,7 @@ const SignUpForm = () => {
       <div className='modal-content'>
         <h1>Sign Up</h1>
 
-        {login && (
+        {isLoggedIn && (
           <Navigate to="/signin" replace={true} />
         )}
 
@@ -58,7 +58,7 @@ const SignUpForm = () => {
             label="First Name"
             name="first_name"
             value={formData.first_name}
-            onChange={handleChange}
+            onChange={changeData}
           // required
           >
             <Input />
@@ -68,7 +68,7 @@ const SignUpForm = () => {
             label="Last Name"
             name="last_name"
             value={formData.last_name}
-            onChange={handleChange}
+            onChange={changeData}
           // required
           >
             <Input />
@@ -78,7 +78,7 @@ const SignUpForm = () => {
             label="Email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={changeData}
           // required
           >
             <Input />
@@ -88,7 +88,7 @@ const SignUpForm = () => {
             label="Password"
             name="password"
             value={formData.password}
-            onChange={handleChange}
+            onChange={changeData}
           // required
           >
             <Input.Password />
@@ -103,7 +103,7 @@ const SignUpForm = () => {
                 name="gender"
                 id="gender"
                 value={formData.gender}
-                onChange={handleChange}
+                onChange={changeData}
               // required
               >
                 <option value="">Select gender</option>

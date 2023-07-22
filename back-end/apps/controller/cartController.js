@@ -3,7 +3,7 @@ var router = express.Router();
 var data_md = require('../models/mysql')
 var math_md = require('../calculator/math');
 
-router.get("/:userId/cart/infor", function (req, res) {
+router.get("/:userId/cart", function (req, res) {
     var id = req.params.userId;
     var getCartById = `Select id, product_id, quantity from cart where user_id =` + id;
 
@@ -123,6 +123,9 @@ router.post("/:userId/cart/order", async function (req, res) {
                 item.name + `",` + item.price + `)`;
             var res = await data_md.getData(query);
         })
+
+        var deleteCart = `Delete from cart where user_id = ` + userId;
+        var dl = await data_md.getData(deleteCart);
 
         res.status(200).json({ message: true });
     } catch (e) {

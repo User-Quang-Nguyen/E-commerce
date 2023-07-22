@@ -1,22 +1,33 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Button, Card, InputNumber, Tooltip, message } from 'antd';
+import { useParams } from 'react-router-dom';
+import { Button, Card, InputNumber, message } from 'antd';
 import '../../asset/styles.css';
+import { getAddress } from '../../api/user';
+import { getProductById } from '../../api/product';
+import { handleAddToCart } from '../../api/cart';
 
-function Body({ isLoggedIn }) {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const id = searchParams.get('id');
+function DisplayCardDetail({ authState }) {
+    const id = useParams().id;
 
-    const [images, setImages] = useState([]);
     const [infos, setInfos] = useState([]);
-    const [number, setNumber] = useState(1); // number of product
+    const [quantity, setQuantity] = useState(1);
     const [address, setAddress] = useState('');
-    
-    const changeNumber = (num) => {
-        setNumber(num);
-    }
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const addressResponse = await getAddress(authState);
+                setAddress(addressResponse);
+
+                const productResponse = await getProductById(id);
+                setInfos(productResponse);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchData();
+    }, [authState])
 
     const addToCart = async (userId, productId, quantity) => {
         var formData = {
@@ -24,53 +35,17 @@ function Body({ isLoggedIn }) {
             productId: productId,
             quantity: quantity,
         }
-
-        try {
-            const response = await axios.post("http://localhost:5000/users/cart", formData);
-            if (response.status === 200) {
-                message.success("Thêm giỏ thành công !");
-            } else {
-                throw new Error("Something went wrong");
-            }
-        } catch (error) {
-            console.log(error);
-        }
-
+        handleAddToCart(formData);
     }
-
-    useEffect(() => {
-        const getAddress = async () => {
-            if (isLoggedIn.message === true) {
-                const response = await axios.get(`http://localhost:5000/users/${isLoggedIn.id}/address`);
-                var addr = response.data[0].address + ', ' + response.data[0].city;
-                setAddress(addr);
-            }
-        };
-
-        const getProductInfo = async () => {
-            const response = await axios.get(`http://localhost:5000/products/${id}/detail`);
-            setInfos(response.data);
-        };
-
-        const getImages = async () => {
-            const response = await axios.get(`http://localhost:5000/products/${id}/image`);
-            setImages(response.data);
-        };
-
-        getAddress();
-        getProductInfo();
-        getImages();
-
-    }, [isLoggedIn])
 
     return (
         <div className='container-body-cd'>
             <Card style={{ backgroundColor: '#CCCCCC' }}>
                 <div className='display-content'>
                     <Card>
-                        <img src={images[0]?.image} alt="Main Image" className="main-image" />
+                        <img src={infos.image[0].image} alt="Main Image" className="main-image" />
                         <div style={{ display: 'flex' }}>
-                            {images.slice(1).map((image, index) => (
+                            {infos.image.slice(1).map((image, index) => (
                                 <div key={image.id} className="thumbnail-images">
                                     <img key={index} src={image.image} alt="Thumbnail 1" className="thumbnail-image" />
                                 </div>
@@ -79,19 +54,19 @@ function Body({ isLoggedIn }) {
                     </Card>
 
                     <Card style={{ padding: '10px', marginLeft: '20px' }}>
-                        {infos.map((info) => (
+                        {infos.info[0].map((info) => (
                             <div key={info.id}>
                                 <h1>{info.name}</h1>
                                 <h3>{info.description}</h3>
                                 <p>Giá: {info.price} VND</p>
                                 Số lượng:
-                                <InputNumber className='input-number' addonAfter="VND" defaultValue={1} onChange={(value) => changeNumber(value)} />
+                                <InputNumber className='input-number' addonAfter="VND" defaultValue={1} onChange={(value) => setQuantity(value)} />
                                 (có tổng {info.quantity} sản phẩm trong kho)
-                                {isLoggedIn.message ? (
+                                {authState.isLoggedIn ? (
                                     <div>
                                         <p>Vận chuyển tới: {address}</p>
                                         <div className='display-center' >
-                                            <Button type="primary" danger onClick={() => addToCart(isLoggedIn.id, info.id, number)}>
+                                            <Button type="primary" danger onClick={() => addToCart(authState.id, info.id, quantity)}>
                                                 Thêm vào giỏ hàng
                                             </Button>
                                         </div>
@@ -115,4 +90,4 @@ function Body({ isLoggedIn }) {
     );
 }
 
-export default Body;
+export default DisplayCardDetail;

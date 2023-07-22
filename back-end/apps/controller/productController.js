@@ -27,7 +27,7 @@ router.get("/category", function (req, res) {
     data_md.responseData(getCategories, req, res);
 });
 
-router.get("/:productId/detail", function (req, res) {
+router.get("/:productId", function (req, res) {
     var id = req.params.productId;
     var getProductDetail = `Select * from product where id = ` + id;
     data_md.responseData(getProductDetail, req, res);

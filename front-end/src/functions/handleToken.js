@@ -4,7 +4,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export const sendToken = async () => {
+export const verifyToken = async () => {
   var token = localStorage.getItem('token');
   var data = {
     'token': token,
@@ -20,6 +20,14 @@ export const sendToken = async () => {
     console.error("Error", error);
     return { message: false };
   }
+};
+
+export const getToken = () => {
+  return localStorage.getItem('token');
+}
+
+export const setToken = (token) => {
+  localStorage.setItem('token', token);
 }
 
 export default sleep;

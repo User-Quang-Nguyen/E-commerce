@@ -26,21 +26,12 @@ router.get("/:userId/delivery", function (req, res) {
         .catch((error) => {
             res.status(401).json({ success: false, message: error });
         })
-    // try {
-    //     var query = `select first_name, last_name, phone_number, city, address from users where id = ` + id;
-    //     var data = data_md.getData(query);
-    //     var newName = data[0].first_name + ' ' + data[0].last_name;
-    //     var newAddress = data[0].address + ', ' + data[0].city;
-    //     var newData = {
-    //         fullName: newName,
-    //         phoneNumber: data[0].phone_number,
-    //         address: newAddress,
-    //     };
-    //     res.status(200).json(newData);
-    // } catch (error) {
-    //     res.status(401).json({ success: false, message: error });
-    // }
 })
 
+router.get("/:userId", function (req, res) {
+    var id = req.params.userId;
+    var getUserById = `Select id, first_name, last_name, date_of_birth, phone_number, city, address, gender from users where id = ${id}`;
+    data_md.responseData(getUserById, req, res);
+})
 
 module.exports = router;

@@ -1,42 +1,29 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Col, Row, Select, Button, message } from "antd";
 import axios from "axios";
 import { sum, mul } from "../../functions/math";
-import sleep from '../../functions/extension'
+import sleep from '../../functions/handleToken'
 
 const handleChange = (value) => {
     console.log(value);
 };
 
-const Footer = ({ total, ship, vou, userId }) => {
+const PaymentInfo = ({ total, ship, vou, userId }) => {
+    const navigate = useNavigate();
     const handleOk = async () => {
         try {
             const orderResponse = await axios.post(`http://localhost:5000/users/${userId}/cart/order`);
-            const cartResponse = await axios.delete(`http://localhost:5000/users/${userId}/cart`);
-
-            if (orderResponse.status === 200 && cartResponse.status === 200) {
-                message.success("Đặt hàng thành công!", 2);
-                await sleep(2000);
-                window.location.reload();
-            } else {
-                throw new Error("Something went wrong");
-            }
+            message.success("Đặt hàng thành công!", 2);
+            await sleep(2000);
+            navigate("/");
         } catch (error) {
             message.error("Đặt hàng thất bại!");
         }
     };
 
     const handleCancel = async () => {
-        try {
-            const response = await axios.delete(`http://localhost:5000/users/${userId}/cart`);
-            if (response.status === 200) {
-                window.location.href = "/";
-            } else {
-                throw new Error("Something went wrong");
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        navigate('/');
     };
 
     return (
@@ -74,7 +61,7 @@ const Footer = ({ total, ship, vou, userId }) => {
                             Đặt hàng
                         </Button>
                         <Button type="primary" danger onClick={handleCancel}>
-                            Hủy đơn
+                            Cancel
                         </Button>
                     </p>
                 </Col>
@@ -82,4 +69,4 @@ const Footer = ({ total, ship, vou, userId }) => {
         </div>
     )
 }
-export default Footer;
+export default PaymentInfo;

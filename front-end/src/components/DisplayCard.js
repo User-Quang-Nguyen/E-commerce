@@ -3,26 +3,22 @@ import React from 'react';
 import axios from 'axios';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
+import { handleAddToCart } from '../api/cart';
 const { Meta } = Card;
 
-const DisplayCart = ({ title, objects, isLoggedIn }) => {
+const DisplayCart = ({ title, objects, authState }) => {
     const navigate = useNavigate();
-    const handleAddToCart = (userId, productId, quantity) => {
+    const addToCart = (userId, productId, quantity) => {
         var formData = {
             userId: userId,
             productId: productId,
             quantity: quantity,
         }
 
-        axios.post("http://localhost:5000/users/cart", formData)
-            .then((response) => {
-                message.success("Thêm giỏ thành công !")
-            })
-            .catch((error) => { console.log(error) })
+        handleAddToCart(formData);
     };
     const getProductDetail = (id) => {
-        navigate("/products?id=" + id);
+        navigate(`/products/${id}`);
     };
     return (
         <div>
@@ -47,7 +43,7 @@ const DisplayCart = ({ title, objects, isLoggedIn }) => {
                             <a onClick={
                                 (e) => {
                                     e.stopPropagation();
-                                    handleAddToCart(isLoggedIn.id, object.product_id, 1);
+                                    addToCart(authState.id, object.product_id, 1);
                                 }
                             }><Button type="primary">Thêm vào giỏ</Button>
                             </a>

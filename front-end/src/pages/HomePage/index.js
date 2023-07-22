@@ -1,14 +1,10 @@
 import React from 'react';
-import Header from './Header';
 import Body from './HomeBody';
-import Footer from './HomeFooter';
 
-const HomePage = ({ isLoggedIn }) => {
+const HomePage = ({ authState }) => {
   return (
     <div>
-      <Header isLoggedIn={isLoggedIn} />
-      <Body isLoggedIn={isLoggedIn} />
-      <Footer />
+      <Body authState={authState} />
     </div>
   );
 }

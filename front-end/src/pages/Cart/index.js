@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import Header from "../HomePage/Header";
 import Body from "./body";
-import Footer from "./footer";
+import PaymentInfo from "./PaymentInfo";
 import axios from "axios";
 
-const Cart = ({ isLoggedIn }) => {
+const Cart = ({ authState }) => {
     const [total, setTotal] = useState(0);
     useEffect(() => {
         const getCartTotal = async () => {
-            const response = await axios.get(`http://localhost:5000/users/${isLoggedIn.id}/cart/total`);
+            const response = await axios.get(`http://localhost:5000/users/${authState.id}/cart/total`);
             setTotal(response.data);
         };
         try {
@@ -16,13 +15,12 @@ const Cart = ({ isLoggedIn }) => {
         } catch (err) {
             console.log(err);
         }
-    }, [total, isLoggedIn])
+    }, [total, authState])
 
     return (
         <div>
-            <Header isLoggedIn={isLoggedIn} />
-            <Body isLoggedIn={isLoggedIn} />
-            <Footer total={total} ship={20000} vou={-20000} userId={isLoggedIn.id} />
+            <Body authState={authState} />
+            <PaymentInfo total={total} ship={20000} vou={-20000} userId={authState.id} />
         </div>
     )
 }

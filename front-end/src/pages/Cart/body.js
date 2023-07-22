@@ -1,32 +1,45 @@
 import React, { useEffect, useState } from "react";
 import Table_product from "../../components/TableProduct";
-import axios from "axios";
+import { getShippingInfo } from "../../api/user";
+import { handleGetCartInfo } from "../../api/cart";
 
-const Body = ({ isLoggedIn }) => {
+const Body = ({ authState }) => {
     const [items, setItems] = useState([]);
     const [address, setAddress] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                var apiGetShippingInfo = `http://localhost:5000/users/${isLoggedIn.id}/delivery`;
-                const shippingInfoRes = await axios.get(apiGetShippingInfo)
-                setAddress(shippingInfoRes.data);
+        // const fetchData = async (auth) => {
+        //     try {
+        //         const delivery = await getShippingInfo(auth.id);
+        //         const infor = await handleGetCartInfo(auth.id);
 
-                var apiGetBodyInfo = `http://localhost:5000/users/${isLoggedIn.id}/cart/infor`;
-                const bodyInfoResponse = await axios.get(apiGetBodyInfo)
-                setItems(bodyInfoResponse.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
+        //         setAddress(delivery);
+        //         setItems(infor);
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // };
+        // fetchData(authState);
+        getShippingInfo(authState.id)
+            .then((response) => {
+                setAddress(response);
+            })
+            .catch((e) => {
+                console.error(e);
+            })
 
-        fetchData();
-    }, [isLoggedIn]);
+        handleGetCartInfo(authState.id)
+            .then((response) => {
+                setItems(response);
+            })
+            .catch((e) => {
+                console.error(e);
+            })
+
+    }, [authState]);
 
     useEffect(() => { }, [items])
 
-    var shippingAddress = address.phoneNumber + ', ' + address.fullName + ', ' + address.address + '.';
     return (
         <div>
             <div style={{ backgroundColor: '#D9D9D9', padding: '10px' }}>
@@ -34,7 +47,7 @@ const Body = ({ isLoggedIn }) => {
                 <span>
                     <a href="">Thay đổi</a>
                 </span>
-                <p>{shippingAddress}</p>
+                <p>{address}</p>
             </div>
             <div>
                 <Table_product data={items} />

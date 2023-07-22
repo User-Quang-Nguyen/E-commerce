@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, message } from 'antd';
-import { Navigate } from "react-router-dom";
-import sleep from '../../functions/extension';
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../../asset/styles.css';
+import { HandleLogin } from '../../api/authen';
+import { getToken, setToken, verifyToken } from '../../functions/handleToken';
 
 const SignIn = () => {
-  //variable "token" to store the token received
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const [login, setLogin] = useState(false);
+  const initToken = getToken();
+  const [token, setToken] = useState(initToken);
+  const navigate = useNavigate();
 
   const onFinish = (values) => {
     axios.post('http://localhost:5000/authentication/login', values)
       .then((response) => {
-        message.success('Đăng nhập thành công!', 3);
+        message.success('Đăng nhập thành công!', 2);
         setToken(response.data.data.token);
-        sleep(1000);
-        setLogin(true);
+        navigate('/', { replace: true });
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -24,9 +24,9 @@ const SignIn = () => {
       });
   };
 
-  //listen for changes from the variable state "token"
   useEffect(() => {
     localStorage.setItem('token', token);
+    // setToken(token);
   }, [token]);
 
   const onFinishFailed = (errorInfo) => {
@@ -37,9 +37,6 @@ const SignIn = () => {
 
     <div className='modal'>
       <div className='modal-content'>
-        {login && (
-          <Navigate to="/" replace={true} />
-        )}
         <h1>Sign In</h1>
         <Form
           name="basic"

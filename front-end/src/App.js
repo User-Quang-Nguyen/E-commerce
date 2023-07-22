@@ -1,27 +1,32 @@
 import { useState, useEffect } from 'react';
-import { sendToken } from './functions/extension';
+import { verifyToken } from './functions/handleToken';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { getUserById } from './api/user';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import HomePage from './pages/HomePage';
-import Product from './pages/CardDetail';
+import ProductPreview from './pages/ProductPreview';
+import HomeHeader from './components/Header';
+import HomeFooter from './components/Footer';
 import Cart from './pages/Cart';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState({
-    message: false,
+  const [authState, setAuthState] = useState({
+    isLoggedIn: false,
     id: '',
-    email: '',
+    name: '',
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await sendToken();
-        setLoggedIn({
-          message: result.message,
+        const result = await verifyToken();
+        console.log(result);
+        const info = await getUserById(result.result.userID);
+        setAuthState({
+          isLoggedIn: result.message,
           id: result.result.userID,
-          email: result.result.userEmail,
+          name: info[0].last_name,
         });
       } catch (error) {
         console.log(error);
@@ -30,18 +35,19 @@ function App() {
     fetchData();
   }, []);
 
-  useEffect(() => { }, [loggedIn])
-  console.log(loggedIn);
+  useEffect(() => { }, [authState])
   return (
     <Router>
       <div className="App">
+        <HomeHeader authState={authState} />
         <Routes>
-          <Route path="/" element={<HomePage isLoggedIn={loggedIn} />} />
+          <Route path="/" element={<HomePage authState={authState} />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/products" element={<Product isLoggedIn={loggedIn} />} />
-          <Route path='/cart' element={<Cart isLoggedIn={loggedIn} />} />
+          <Route path="/products/:id" element={<ProductPreview authState={authState} />} />
+          <Route path="/cart" element={<Cart authState={authState} />} />
         </Routes>
+        <HomeFooter />
       </div>
     </Router>
   );
