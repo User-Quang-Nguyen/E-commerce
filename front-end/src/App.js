@@ -9,6 +9,7 @@ import ProductPreview from './pages/ProductPreview';
 import HomeHeader from './components/Header';
 import HomeFooter from './components/Footer';
 import Cart from './pages/Cart';
+import Profile from './pages/Profile/displayInfo';
 
 function App() {
   const [authState, setAuthState] = useState({
@@ -21,7 +22,6 @@ function App() {
     const fetchData = async () => {
       try {
         const result = await verifyToken();
-        console.log(result);
         const info = await getUserById(result.result.userID);
         setAuthState({
           isLoggedIn: result.message,
@@ -46,6 +46,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/products/:id" element={<ProductPreview authState={authState} />} />
           <Route path="/cart" element={<Cart authState={authState} />} />
+          <Route path='/profile' element={<Profile authState={authState} />} />
         </Routes>
         <HomeFooter />
       </div>

@@ -53,9 +53,14 @@ router.post("/loginVerification", async function (req, res) {
     try {
         var token = req.body.token;
         var result = await user_md.loginVerification(token);
-        res.status(200).json({ message: true, result });
+        if (result === "Invalid token") {
+            res.setHeader('Content-Type', 'text/html');
+            res.status(400).json({ message: false });
+        } else {
+            res.status(200).json({ message: true, result });
+        }
     } catch (error) {
-        console.log(error);
+        res.status(400).json({ message: false })
     }
 });
 

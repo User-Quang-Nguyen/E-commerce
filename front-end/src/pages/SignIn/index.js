@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, message } from 'antd';
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../../asset/styles.css';
-import { HandleLogin } from '../../api/authen';
-import { getToken, setToken, verifyToken } from '../../functions/handleToken';
+import { getToken } from '../../functions/handleToken';
 
 const SignIn = () => {
-  const initToken = getToken();
-  const [token, setToken] = useState(initToken);
   const navigate = useNavigate();
 
   const onFinish = (values) => {
     axios.post('http://localhost:5000/authentication/login', values)
       .then((response) => {
+        localStorage.setItem('token', response.data.data.token);
         message.success('Đăng nhập thành công!', 2);
-        setToken(response.data.data.token);
         navigate('/', { replace: true });
       })
       .catch((error) => {
@@ -23,11 +20,6 @@ const SignIn = () => {
         message.error('Đăng nhập thất bại!', 3);
       });
   };
-
-  useEffect(() => {
-    localStorage.setItem('token', token);
-    // setToken(token);
-  }, [token]);
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);

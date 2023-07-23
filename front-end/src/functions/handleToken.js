@@ -10,7 +10,7 @@ export const verifyToken = async () => {
     'token': token,
   }
   try {
-    if (data.token === null) return { message: false };
+    if (data.token === null || data.token === '') return { message: false };
     else {
       const response = await axios.post("http://localhost:5000/authentication/loginVerification", data);
       const decodedData = response.data;

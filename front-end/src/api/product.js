@@ -21,5 +21,6 @@ export const getProductById = async (id) => {
         return res;
     } catch (e) {
         console.error(e);
+        return [];
     }
 }

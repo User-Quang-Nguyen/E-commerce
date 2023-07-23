@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Col, Row, Select, Button, message } from "antd";
-import axios from "axios";
+import { Col, Row, Select, Button } from "antd";
 import { sum, mul } from "../../functions/math";
-import sleep from '../../functions/handleToken'
+import { handleOrder } from "../../api/cart";
 
 const handleChange = (value) => {
     console.log(value);
@@ -11,18 +10,12 @@ const handleChange = (value) => {
 
 const PaymentInfo = ({ total, ship, vou, userId }) => {
     const navigate = useNavigate();
-    const handleOrder = async () => {
-        try {
-            const orderResponse = await axios.post(`http://localhost:5000/users/${userId}/cart/order`);
-            message.success("Đặt hàng thành công!", 2);
-            await sleep(2000);
-            navigate("/");
-        } catch (error) {
-            message.error("Đặt hàng thất bại!");
-        }
+    const order = async () => {
+        handleOrder(userId);
+        navigate('/');
     };
 
-    const handleCancel = async () => {
+    const cancel = async () => {
         navigate('/');
     };
 
@@ -57,10 +50,10 @@ const PaymentInfo = ({ total, ship, vou, userId }) => {
                         {sum(total, mul(total, 0.1), ship, vou)} VND
                     </span>
                     <p>
-                        <Button type="primary" onClick={handleOrder} >
+                        <Button type="primary" onClick={order} >
                             Đặt hàng
                         </Button>
-                        <Button type="primary" danger onClick={handleCancel}>
+                        <Button type="primary" danger onClick={cancel}>
                             Cancel
                         </Button>
                     </p>

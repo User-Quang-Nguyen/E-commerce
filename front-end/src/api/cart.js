@@ -18,4 +18,14 @@ export const handleGetCartInfo = async (id) => {
     } catch (error) {
         console.error(error);
     }
-} 
+}
+
+export const handleOrder = async (userId) => {
+    try {
+        const orderResponse = await axios.post(`http://localhost:5000/users/${userId}/cart/order`);
+        message.success("Đặt hàng thành công!", 2);
+        // await sleep(2000);
+    } catch (error) {
+        message.error("Đặt hàng thất bại!");
+    }
+}

@@ -8,33 +8,18 @@ const Body = ({ authState }) => {
     const [address, setAddress] = useState([]);
 
     useEffect(() => {
-        // const fetchData = async (auth) => {
-        //     try {
-        //         const delivery = await getShippingInfo(auth.id);
-        //         const infor = await handleGetCartInfo(auth.id);
+        const fectch = async () => {
+            const address = await getShippingInfo(authState.id);
+            const items = await handleGetCartInfo(authState.id);
+            setAddress(address);
+            setItems(items);
+        }
 
-        //         setAddress(delivery);
-        //         setItems(infor);
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // };
-        // fetchData(authState);
-        getShippingInfo(authState.id)
-            .then((response) => {
-                setAddress(response);
-            })
-            .catch((e) => {
-                console.error(e);
-            })
-
-        handleGetCartInfo(authState.id)
-            .then((response) => {
-                setItems(response);
-            })
-            .catch((e) => {
-                console.error(e);
-            })
+        try {
+            fectch();
+        } catch (e) {
+            console.error(e);
+        }
 
     }, [authState]);
 
