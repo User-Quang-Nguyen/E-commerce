@@ -10,7 +10,8 @@ import { handleAddToCart } from '../../api/cart';
 function DisplayCardDetail({ authState }) {
     const id = useParams().id;
 
-    const [infos, setInfos] = useState([]);
+    const [infos, setInfos] = useState(
+    );
     const [quantity, setQuantity] = useState(1);
     const [address, setAddress] = useState('');
 
@@ -21,6 +22,7 @@ function DisplayCardDetail({ authState }) {
                 setAddress(addressResponse);
 
                 const productResponse = await getProductById(id);
+                console.log(productResponse);
                 setInfos(productResponse);
             } catch (error) {
                 console.error(error);
@@ -43,9 +45,9 @@ function DisplayCardDetail({ authState }) {
             <Card style={{ backgroundColor: '#CCCCCC' }}>
                 <div className='display-content'>
                     <Card>
-                        <img src={infos.image[0].image} alt="Main Image" className="main-image" />
+                        <img src={infos?.image[0]?.image} alt="Main Image" className="main-image" />
                         <div style={{ display: 'flex' }}>
-                            {infos.image.slice(1).map((image, index) => (
+                            {infos?.image.slice(1).map((image, index) => (
                                 <div key={image.id} className="thumbnail-images">
                                     <img key={index} src={image.image} alt="Thumbnail 1" className="thumbnail-image" />
                                 </div>
@@ -54,7 +56,7 @@ function DisplayCardDetail({ authState }) {
                     </Card>
 
                     <Card style={{ padding: '10px', marginLeft: '20px' }}>
-                        {infos.info[0].map((info) => (
+                        {infos?.info.map((info) => (
                             <div key={info.id}>
                                 <h1>{info.name}</h1>
                                 <h3>{info.description}</h3>
@@ -87,6 +89,7 @@ function DisplayCardDetail({ authState }) {
                 </div>
             </Card>
         </div>
+        // <div />
     );
 }
 

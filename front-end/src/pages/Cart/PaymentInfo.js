@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Col, Row, Select, Button } from "antd";
-import { sum, mul } from "../../functions/math";
+import { sum, mul } from "../../service/math";
 import { handleOrder } from "../../api/cart";
 
 const handleChange = (value) => {

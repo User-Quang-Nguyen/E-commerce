@@ -9,7 +9,8 @@ import ProductPreview from './pages/ProductPreview';
 import HomeHeader from './components/Header';
 import HomeFooter from './components/Footer';
 import Cart from './pages/Cart';
-import Profile from './pages/Profile/displayInfo';
+import Profile from './pages/Profile';
+import OrderHistory from './pages/OrderHistory';
 
 function App() {
   const [authState, setAuthState] = useState({
@@ -47,6 +48,7 @@ function App() {
           <Route path="/products/:id" element={<ProductPreview authState={authState} />} />
           <Route path="/cart" element={<Cart authState={authState} />} />
           <Route path='/profile' element={<Profile authState={authState} />} />
+          <Route path='/orderhistory' element={<OrderHistory authState={authState} />} />
         </Routes>
         <HomeFooter />
       </div>

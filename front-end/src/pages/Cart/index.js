@@ -6,6 +6,7 @@ import axios from "axios";
 const Cart = ({ authState }) => {
     const [total, setTotal] = useState(0);
     useEffect(() => {
+        if (!authState.id) return;
         const getCartTotal = async () => {
             const response = await axios.get(`http://localhost:5000/users/${authState.id}/cart/total`);
             setTotal(response.data);

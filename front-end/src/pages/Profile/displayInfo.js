@@ -5,18 +5,14 @@ import { getUserById } from "../../api/user";
 import moment from "moment";
 
 const DisplayInfo = ({ authState }) => {
-    const [infos, setInfo] = useState([]);
+    const [info, setInfo] = useState({});
     const timeString = '';
     const date = '';
     useEffect(() => {
-        // getUserById(authState.id)
-        //     .then(response => {
-        //         setInfo(response);
-        //     })
-        //     .catch(e => { console.error(e) })
         const fetch = async () => {
+            if (!authState.id) return;
             const imp = await getUserById(authState.id);
-            setInfo(imp);
+            setInfo(imp[0]);
         }
 
         try {
@@ -24,8 +20,6 @@ const DisplayInfo = ({ authState }) => {
         } catch (e) {
             console.log(e);
         }
-
-        console.log(infos);
     }, [authState]);
 
     return (
@@ -55,13 +49,13 @@ const DisplayInfo = ({ authState }) => {
                 justifyContent="center"
             >
                 <Form.Item label="First Name">
-                    <Input value={infos[0]?.first_name} />
+                    <Input value={info?.first_name} />
                 </Form.Item>
                 <Form.Item label="Last Name">
-                    <Input value={infos[0]?.last_name} />
+                    <Input value={info?.last_name} />
                 </Form.Item>
                 <Form.Item label="Phone">
-                    <Input value={infos[0]?.phone_number} />
+                    <Input value={info?.phone_number} />
                 </Form.Item>
                 <Form.Item label="Gender">
                     <Select value="Male">

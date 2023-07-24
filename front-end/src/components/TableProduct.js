@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, InputNumber } from 'antd';
 import axios from 'axios';
-import { mul } from '../functions/math';
+import { mul } from '../service/math';
 
 const Table_product = ({ data }) => {
     const [tableData, setTableData] = React.useState(data);

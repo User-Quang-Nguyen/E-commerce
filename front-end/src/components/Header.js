@@ -3,8 +3,8 @@ import { Layout, Row, Col, Input, Button } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import '../asset/styles.css'
 import myLogo from '../asset/logo192.png';
-import { CartIcon } from './cartIcon';
-import { ProfileIcon } from './profileIcon';
+import { CartIcon } from './CartIcon';
+import { ProfileIcon } from './ProfileIcon';
 
 const { Header } = Layout;
 const { Search } = Input;

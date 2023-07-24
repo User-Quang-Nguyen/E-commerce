@@ -95,7 +95,10 @@ router.put("/cartitems", async function (req, res) {
     }
 })
 
-router.post("/:userId/cart/order", async function (req, res) {
+router.post("/:userId/cart/order", function (req, res) {
+    const userId = req.params.userId;
+    var getOrderInfo = `select orders.id, list_orders.name, list_orders.price , list_orders.quantity, orders.created_at`
+}, async function (req, res) {
     const userId = req.params.userId;
     var query = `select cart.user_id, SUM(product.price*cart.quantity) AS total, current_timestamp() AS created_at
                 from cart inner join product on cart.product_id = product.id where cart.user_id=` + userId + ` group by cart.user_id`;
@@ -142,6 +145,13 @@ router.delete("/:userId/cart", async function (req, res) {
     } catch (e) {
         res.status(400).json({ message: false });
     }
+})
+
+router.get("/:userId/cart/order", function (req, res) {
+    const userId = req.params.userId;
+    var getOrderInfo = `select orders.id as order_id, list_orders.name, list_orders.price , list_orders.quantity, orders.created_at
+                        from orders inner join list_orders on orders.id = list_orders.order_id where orders.user_id = ${userId}`;
+    data_md.responseData(getOrderInfo, req, res);
 })
 
 module.exports = router;

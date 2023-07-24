@@ -9,6 +9,7 @@ const Body = ({ authState }) => {
 
     useEffect(() => {
         const fectch = async () => {
+            if (!authState.id) return;
             const address = await getShippingInfo(authState.id);
             const items = await handleGetCartInfo(authState.id);
             setAddress(address);
