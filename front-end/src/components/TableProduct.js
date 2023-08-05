@@ -2,6 +2,7 @@ import React from 'react'
 import { Table, InputNumber } from 'antd';
 import axios from 'axios';
 import { mul } from '../service/math';
+import { BASE_URL } from '../api/baseURL';
 
 const Table_product = ({ data }) => {
     const [tableData, setTableData] = React.useState(data);
@@ -17,7 +18,7 @@ const Table_product = ({ data }) => {
                     id: id,
                     quantity: value,
                 }
-                var query = `http://localhost:5000/users/cartitems`;
+                var query = `${BASE_URL}/users/cartitems`;
                 axios.put(query, formData)
                     .then((respone) => {
                     })

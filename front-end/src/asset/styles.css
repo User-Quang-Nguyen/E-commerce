@@ -38,7 +38,7 @@
 }
 
 #enterButton {
-    width: 700px;
+    width: 600px;
 }
 
 .product-card {
@@ -139,7 +139,8 @@ button {
 
 .display-content {
     display: flex;
-    width: fit-content;
+    justify-content: center;
+    align-items: center;
 }
 
 .image-gallery {

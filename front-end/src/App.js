@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { verifyToken } from './functions/handleToken';
+import { verifyToken } from './service/handleToken';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { getUserById } from './api/user';
 import SignIn from './pages/SignIn';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAndSetAPIData } from '../../api/product';
+import { getAndSetData } from '../../api/product';
 import '../../asset/styles.css';
 import DisplayCard from '../../components/DisplayCard';
 import MenuCategory from '../../components/MenuCategory';
@@ -31,7 +31,7 @@ const HomeBody = ({ authState }) => {
 
     useEffect(() => {
         links.map((link) => {
-            getAndSetAPIData(link.link, link.var)
+            getAndSetData(link.link, link.var)
         })
     }, []);
 

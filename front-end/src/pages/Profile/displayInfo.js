@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { PlusOutlined } from '@ant-design/icons';
 import { DatePicker, Form, Input, Select, Card, Button } from 'antd';
 import { getUserById } from "../../api/user";
-import moment from "moment";
 
 const DisplayInfo = ({ authState }) => {
     const [info, setInfo] = useState({});
@@ -29,9 +27,6 @@ const DisplayInfo = ({ authState }) => {
             hoverable={true}
             style={{
                 width: 600,
-                textAlign: 'center',
-                marginTop: '20px',
-                marginLeft: '360px'
             }}
         >
             <Form
@@ -43,10 +38,8 @@ const DisplayInfo = ({ authState }) => {
                 }}
                 layout="horizontal"
                 style={{
-                    // maxWidth: 600,
                     width: 700
                 }}
-                justifyContent="center"
             >
                 <Form.Item label="First Name">
                     <Input value={info?.first_name} />

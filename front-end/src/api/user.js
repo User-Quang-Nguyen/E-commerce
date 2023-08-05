@@ -1,8 +1,9 @@
 import axios from "axios";
+import { BASE_URL } from "./baseURL";
 
 export const getUserById = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:5000/users/${id}`);
+        const response = await axios.get(`${BASE_URL}/users/${id}`);
         const info = response.data;
         return info;
     } catch (e) {

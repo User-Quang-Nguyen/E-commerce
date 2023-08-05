@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, message } from 'antd';
+import React from 'react';
+import { Button, Form, Input } from 'antd';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 import '../../asset/styles.css';
-import { getToken } from '../../functions/handleToken';
+import { HandleLogin } from '../../api/authen';
 
 const SignIn = () => {
   const navigate = useNavigate();
-
   const onFinish = (values) => {
-    axios.post('http://localhost:5000/authentication/login', values)
-      .then((response) => {
-        localStorage.setItem('token', response.data.data.token);
-        message.success('Đăng nhập thành công!', 2);
-        navigate('/', { replace: true });
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        message.error('Đăng nhập thất bại!', 3);
-      });
+    HandleLogin(values, navigate);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -26,7 +15,6 @@ const SignIn = () => {
   };
 
   return (
-
     <div className='modal'>
       <div className='modal-content'>
         <h1>Sign In</h1>

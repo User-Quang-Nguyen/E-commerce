@@ -1,9 +1,10 @@
 import axios from "axios";
 import { message } from "antd";
+import { BASE_URL } from "./baseURL";
 
 export const handleAddToCart = async (formData) => {
     try {
-        const response = await axios.post("http://localhost:5000/users/cart", formData);
+        const response = await axios.post(`${BASE_URL}/users/cart`, formData);
         message.success("Thêm giỏ thành công !");
     } catch (error) {
         console.log(error);
@@ -12,7 +13,7 @@ export const handleAddToCart = async (formData) => {
 
 export const handleGetCartInfo = async (id) => {
     try {
-        var getCartInfo = `http://localhost:5000/users/${id}/cart`;
+        var getCartInfo = `${BASE_URL}/users/${id}/cart`;
         const info = await axios.get(getCartInfo);
         return info.data;
     } catch (error) {
@@ -22,10 +23,18 @@ export const handleGetCartInfo = async (id) => {
 
 export const handleOrder = async (userId) => {
     try {
-        const orderResponse = await axios.post(`http://localhost:5000/users/${userId}/cart/order`);
+        const orderResponse = await axios.post(`${BASE_URL}/users/${userId}/cart/order`);
         message.success("Đặt hàng thành công!", 2);
-        // await sleep(2000);
     } catch (error) {
         message.error("Đặt hàng thất bại!");
+    }
+}
+
+export const getTotalMoney = async (userId) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/users/${userId}/cart/total`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
     }
 }

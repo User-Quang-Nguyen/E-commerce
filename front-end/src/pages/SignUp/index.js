@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Button, Form, Input, message } from 'antd';
-import { Navigate } from "react-router-dom";
+import { Button, Form, Input } from 'antd';
+import { useNavigate } from "react-router-dom";
 import '../../asset/styles.css';
 import FormItem from 'antd/es/form/FormItem';
-import sleep from '../../functions/handleToken';
+import { HandleSignUp } from '../../api/authen';
 
 const SignUpForm = () => {
-  const [isLoggedIn, setLogin] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -25,26 +24,13 @@ const SignUpForm = () => {
   };
 
   const handleSubmit = async (formData) => {
-    try {
-      const response = await axios.post('http://localhost:5000/authentication/signup', formData);
-      message.success('Đăng ký thành công!', 2);
-      await sleep(1000);
-      setLogin(true);
-    } catch (error) {
-      message.success('Đăng ký thất bại!', 3);
-    }
+    HandleSignUp(formData, navigate);
   };
 
   return (
-
     <div className='modal'>
       <div className='modal-content'>
         <h1>Sign Up</h1>
-
-        {isLoggedIn && (
-          <Navigate to="/signin" replace={true} />
-        )}
-
         <Form
           name="basic"
           labelCol={{ span: 8 }}
@@ -59,7 +45,6 @@ const SignUpForm = () => {
             name="first_name"
             value={formData.first_name}
             onChange={changeData}
-          // required
           >
             <Input />
           </Form.Item>
@@ -69,7 +54,6 @@ const SignUpForm = () => {
             name="last_name"
             value={formData.last_name}
             onChange={changeData}
-          // required
           >
             <Input />
           </Form.Item>
@@ -79,7 +63,6 @@ const SignUpForm = () => {
             name="email"
             value={formData.email}
             onChange={changeData}
-          // required
           >
             <Input />
           </Form.Item>
@@ -89,7 +72,6 @@ const SignUpForm = () => {
             name="password"
             value={formData.password}
             onChange={changeData}
-          // required
           >
             <Input.Password />
           </Form.Item>
@@ -104,7 +86,6 @@ const SignUpForm = () => {
                 id="gender"
                 value={formData.gender}
                 onChange={changeData}
-              // required
               >
                 <option value="">Select gender</option>
                 <option value="1">Male</option>

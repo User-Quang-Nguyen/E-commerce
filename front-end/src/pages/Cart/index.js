@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import Body from "./body";
 import PaymentInfo from "./PaymentInfo";
-import axios from "axios";
+import { getTotalMoney } from "../../api/cart";
 
 const Cart = ({ authState }) => {
     const [total, setTotal] = useState(0);
     useEffect(() => {
         if (!authState.id) return;
         const getCartTotal = async () => {
-            const response = await axios.get(`http://localhost:5000/users/${authState.id}/cart/total`);
-            setTotal(response.data);
+            const response = await getTotalMoney(authState.id);
+            setTotal(response);
         };
         try {
             getCartTotal();

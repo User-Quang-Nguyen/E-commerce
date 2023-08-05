@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BASE_URL } from "../api/baseURL";
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -12,7 +13,7 @@ export const verifyToken = async () => {
   try {
     if (data.token === null || data.token === '') return { message: false };
     else {
-      const response = await axios.post("http://localhost:5000/authentication/loginVerification", data);
+      const response = await axios.post(`${BASE_URL}/authentication/loginVerification`, data);
       const decodedData = response.data;
       return decodedData;
     }

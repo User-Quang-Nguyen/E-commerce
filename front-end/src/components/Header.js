@@ -1,10 +1,8 @@
 import React from 'react';
-import { Layout, Row, Col, Input, Button } from 'antd';
-import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout, Row, Col, Input } from 'antd';
 import '../asset/styles.css'
 import myLogo from '../asset/logo192.png';
-import { CartIcon } from './CartIcon';
-import { ProfileIcon } from './ProfileIcon';
+import { CartIcon, OrderIcon, ProfileIcon } from './Icon';
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -22,6 +20,15 @@ const HomeHeader = ({ authState }) => {
           <Search id='enterButton' placeholder="Tìm kiếm" enterButton />
         </Col>
         <Col>
+          <OrderIcon link=
+            {authState.isLoggedIn ? (
+              `http://localhost:3000/orderhistory`
+            ) : (
+              "http://localhost:3000/signin"
+            )}
+          />
+        </Col>
+        <Col>
           <CartIcon link=
             {authState.isLoggedIn ? (
               "http://localhost:3000/cart"
@@ -32,7 +39,7 @@ const HomeHeader = ({ authState }) => {
         </Col>
         <Col>
           {authState.isLoggedIn ? (
-            <ProfileIcon text={authState.name} />
+            <ProfileIcon text={authState.name} link='http://localhost:3000/profile' />
           ) : (
             <ProfileIcon text="Đăng nhập" link='http://localhost:3000/signin' />
           )}

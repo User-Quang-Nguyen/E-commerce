@@ -1,7 +1,7 @@
-import React from "react";
 import axios from "axios";
+import { BASE_URL } from "./baseURL";
 
-export const getAndSetAPIData = async (url, setProducts) => {
+export const getAndSetData = async (url, setProducts) => {
     try {
         const response = await axios.get(url);
         setProducts(response.data);
@@ -12,8 +12,8 @@ export const getAndSetAPIData = async (url, setProducts) => {
 
 export const getProductById = async (id) => {
     try {
-        const infoResponse = await axios.get(`http://localhost:5000/products/${id}`);
-        const imageResponse = await axios.get(`http://localhost:5000/products/${id}/image`);
+        const infoResponse = await axios.get(`${BASE_URL}/products/${id}`);
+        const imageResponse = await axios.get(`${BASE_URL}/products/${id}/image`);
         var res = {
             "info": infoResponse.data,
             "image": imageResponse.data

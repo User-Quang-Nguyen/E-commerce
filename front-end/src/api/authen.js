@@ -1,21 +1,29 @@
 import axios from "axios";
-import {useState} from 'react'
 import { message } from 'antd';
-import { useNavigate } from "react-router-dom";
-import { getToken, setToken } from "../functions/handleToken";
+import { setToken } from "../service/handleToken";
+import { BASE_URL } from "./baseURL";
 
-export function HandleLogin(data) {
-    const initToken = getToken();
-    const [token, setToken] = useState(initToken);
-    // const navigate = useNavigate();
-    axios.post('http://localhost:5000/authentication/login', data)
+export function HandleLogin(data, navigate) {
+    axios.post(`${BASE_URL}/authentication/login`, data)
         .then((response) => {
-            message.success('Đăng nhập thành công!', 2);
             setToken(response.data.data.token);
-            // navigate('/', { replace: true });
+            message.success('Đăng nhập thành công!', 2);
+            navigate('/', { replace: true });
         })
         .catch((error) => {
             console.log(error.response.data);
             message.error('Đăng nhập thất bại!', 3);
+        });
+}
+
+export function HandleSignUp(data, navigate) {
+    axios.post(`${BASE_URL}/authentication/signup`, data)
+        .then((response) => {
+            message.success('Đăng ký thành công!', 2);
+            navigate('/signin', { replace: true });
+        })
+        .catch((error) => {
+            console.log(error.response.data);
+            message.error('Đăng ký thất bại!', 3);
         });
 }

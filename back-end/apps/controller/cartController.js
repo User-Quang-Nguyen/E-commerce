@@ -149,8 +149,23 @@ router.delete("/:userId/cart", async function (req, res) {
 
 router.get("/:userId/cart/order", function (req, res) {
     const userId = req.params.userId;
-    var getOrderInfo = `select orders.id as order_id, list_orders.name, list_orders.price , list_orders.quantity, orders.created_at
-                        from orders inner join list_orders on orders.id = list_orders.order_id where orders.user_id = ${userId}`;
+    var getOrderInfo = `
+                        SELECT orders.id AS k,
+                        orders.total_money AS total,
+                        orders.created_at AS created_at,
+                        CONCAT('[', GROUP_CONCAT(
+                        CONCAT(
+                            '{"key":', list_orders.id,
+                            '","name":"', list_orders.name,
+                            '","price":', list_orders.price,
+                            ',"quantity":', list_orders.quantity,
+                        '}'
+                        )), ']') AS secondLevel
+                        FROM orders
+                        INNER JOIN list_orders
+                        ON list_orders.order_id = orders.id
+                        WHERE orders.user_id = ${userId}
+                        GROUP BY orders.id;`;
     data_md.responseData(getOrderInfo, req, res);
 })
 
