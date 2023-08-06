@@ -1,47 +1,12 @@
 var express = require("express");
 var router = express.Router();
-var data_md = require('../models/mysql')
-var math_md = require('../calculator/math');
+var data_md = require('../service/dataProcess')
+var math_md = require('../service/math');
+var cart_md = require('../models/cart')
 
 router.get("/:userId/cart", function (req, res) {
     var id = req.params.userId;
-    var getCartById = `Select id, product_id, quantity from cart where user_id =` + id;
-
-    data_md.getData(getCartById)
-        .then((data) => {
-            var productDetail = [];
-            data.map((item) => {
-                var addData = [{
-                    id: item.id,
-                    quantity: item.quantity,
-                }]
-                var getProductById = `SELECT MIN(image.image) AS image, product.name, product.price, Category.category_name FROM product INNER JOIN image ON image.product_id = product.id INNER JOIN product_category ON product_category.product_id = product.id INNER JOIN Category ON Category.id = product_category.category_id WHERE product.id = ` + item.product_id + ` GROUP BY product.id;`;
-                data_md.getData(getProductById)
-                    .then((product) => {
-                        var total = math_md.mul(item.quantity, product[0].price);
-                        var productData = {
-                            id: item.id,
-                            image: product[0].image,
-                            name: product[0].name,
-                            price: product[0].price,
-                            category_name: product[0].category_name,
-                            quantity: item.quantity,
-                            total: total
-                        };
-                        productDetail.push(productData);
-                        if (productDetail.length === data.length) {
-                            res.json(productDetail);
-                        }
-                    })
-                    .catch((error) => {
-                        // console.log(error);
-                        res.status(500).json({ message: false });
-                    })
-            })
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+    cart_md.getCartById(req, res, id);
 })
 
 router.get("/:userId/cart/total", async function (req, res) {

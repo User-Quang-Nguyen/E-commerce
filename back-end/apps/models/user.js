@@ -1,42 +1,11 @@
 var db = require("../common/database");
-var q = require("q");
 var conn = db.getConnection();
 var mysql = require('mysql');
-var jwt = require("jsonwebtoken");
-const util = require('util');
+var util = require('util');
+var data_md = require('../service/dataProcess')
 
 // Chuyển đổi hàm conn.query thành hàm trả về Promise
 const queryPromise = util.promisify(conn.query).bind(conn);
-
-function createToken(data) {
-    const payload = {
-        id: data.id,
-    }
-    const secretKey = "jwtsecrect";
-    const token = jwt.sign(payload, secretKey, { expiresIn: '1000h' });
-    return token;
-}
-
-async function loginVerification(token) {
-    const secretKey = "jwtsecrect";
-    try {
-        const result = await jwt.verify(token, secretKey, (err, decode) => {
-            if (err) {
-                return "Invalid token";
-            } else {
-                const info = {
-                    'userID': decode.id,
-                };
-                return info;
-            }
-        }
-        )
-        return result;
-    }
-    catch (error) {
-        return "Invalid token";
-    }
-}
 
 function addUser(user) {
     if (user) {
@@ -70,9 +39,13 @@ async function checkUser(user) {
     }
 }
 
+function getUserById(req, res, id){
+    var getUserById = `Select id, first_name, last_name, date_of_birth, phone_number, city, address, gender from users where id = ${id}`;
+    data_md.responseData(getUserById, req, res);
+}
+
 module.exports = {
     addUser: addUser,
     checkUser: checkUser,
-    createToken: createToken,
-    loginVerification: loginVerification,
+    getUserById: getUserById
 }

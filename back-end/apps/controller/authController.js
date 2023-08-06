@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var user_md = require("../models/user");
-var jwt = require("jsonwebtoken");
+var token_md = require("../models/token")
 
 router.post("/signup", function (req, res) {
     var user = req.body;
@@ -31,11 +31,10 @@ router.post("/login", async function (req, res) {
     }
     try {
         var result = await user_md.checkUser(user)
-        // console.log(result);
         if (result === "Đăng nhập thất bại") {
             res.status(401).json({ success: false, message: error });
         } else {
-            var token = user_md.createToken(result);
+            var token = token_md.createToken(result);
             var data = {
                 "id": result.id,
                 "token": token
@@ -52,7 +51,7 @@ router.post("/login", async function (req, res) {
 router.post("/loginVerification", async function (req, res) {
     try {
         var token = req.body.token;
-        var result = await user_md.loginVerification(token);
+        var result = await token_md.loginVerification(token);
         if (result === "Invalid token") {
             res.setHeader('Content-Type', 'text/html');
             res.status(400).json({ message: false });
