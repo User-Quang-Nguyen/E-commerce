@@ -37,15 +37,16 @@ function getImageOfPro(req, res, id) {
     data_md.responseData(getImage, req, res);
 }
 
-function getInfoProduct(item, arr, data) {
-    var getInfoProduct = `SELECT MIN(image.image) AS image, product.name, product.price, 
+async function getInfoProduct(item, arr, data) {
+    var getInfoProductQuery = `SELECT MIN(image.image) AS image, product.name, product.price, 
                         Category.category_name FROM product INNER JOIN image 
                         ON image.product_id = product.id INNER JOIN product_category 
                         ON product_category.product_id = product.id INNER JOIN Category 
                         ON Category.id = product_category.category_id 
                         WHERE product.id = ` + item.product_id + ` GROUP BY product.id;`;
-    data_md.getData(getInfoProduct)
-        .then((product) => {
+    try {
+        const product = await data_md.getData(getInfoProductQuery);
+        if (product && product.length > 0) {
             var total = math_md.mul(item.quantity, product[0].price);
             var productData = {
                 id: item.id,
@@ -60,10 +61,13 @@ function getInfoProduct(item, arr, data) {
             if (arr.length === data.length) {
                 return arr;
             }
-        })
-        .catch((error) => {
-            return null;
-        })
+        } else {
+            throw new Error("Product not found or error in query.");
+        }
+    } catch (error) {
+        console.error("Error in getInfoProduct:", error);
+        return null;
+    }
 }
 
 module.exports = {

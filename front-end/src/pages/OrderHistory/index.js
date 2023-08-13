@@ -1,85 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
+import { HandleGetOrder } from "../../api/order";
 
-const App = () => {
-    const fakeFirstLevelData = [
-        {
-            key: 1,
-            total: 100000,
-            created_at: '2014-12-24 23:12:00',
-            secondLevel: [{
-                key: 1,
-                created_at: '2014-12-24 23:12:00',
-                name: 'Don hang 1',
-                price: 200,
-                quantity: 2,
-            }, {
-                key: 2,
-                created_at: '2014-12-24 23:12:00',
-                name: 'Don hang 2',
-                price: 200,
-                quantity: 2,
-            }, {
-                key: 3,
-                created_at: '2014-12-24 23:12:00',
-                name: 'Don hang 3',
-                price: 200,
-                quantity: 2,
-            }]
-        }, {
-            key: 2,
-            total: 200000,
-            created_at: '2014-12-24 23:12:00',
-            secondLevel: [{
-                key: 1,
-                created_at: '2014-12-24 23:12:00',
-                name: 'Don hang 3',
-                price: 200,
-                quantity: 2,
-            }, {
-                key: 2,
-                created_at: '2014-12-24 23:12:00',
-                name: 'Don hang 4',
-                price: 200,
-                quantity: 2,
-            }, {
-                key: 3,
-                created_at: '2014-12-24 23:12:00',
-                name: 'Don hang 5',
-                price: 200,
-                quantity: 2,
-            }]
-        }, {
-            key: 3,
-            total: 300000,
-            created_at: '2014-12-24 23:12:00',
-            secondLevel: [{
-                key: 1,
-                created_at: '2014-12-24 23:12:00',
-                name: 'Don hang 6',
-                price: 200,
-                quantity: 2,
-            }, {
-                key: 2,
-                created_at: '2014-12-24 23:12:00',
-                name: 'Don hang 7',
-                price: 200,
-                quantity: 2,
-            }, {
-                key: 3,
-                created_at: '2014-12-24 23:12:00',
-                name: 'Don hang 8',
-                price: 200,
-                quantity: 2,
-            }]
+const OrderHistory = ({ authState }) => {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const handleGetOrder = async () => {
+            if (!authState.id) return;
+            const result = await HandleGetOrder(authState.id);
+            setData(result.data);
+        };
+        try {
+            handleGetOrder();
+        } catch (e) {
+            console.error(e);
         }
-    ]
+    }, [authState.id])
 
     const firstLevelColumns = [
         {
             title: 'No.',
-            dataIndex: 'stt',
-            key: 'stt',
+            dataIndex: 'key',
+            key: 'key',
         },
         {
             title: 'Total Money',
@@ -93,11 +36,6 @@ const App = () => {
         },
     ]
     const secondLevelColumns = [
-        {
-            title: 'Date',
-            dataIndex: 'created_at',
-            key: 'created_at',
-        },
         {
             title: 'Name',
             dataIndex: 'name',
@@ -115,26 +53,25 @@ const App = () => {
         },
     ]
     const firstExpandedRow = (record) => {
-        let data = []
+        let dt = []
         record.secondLevel.map((scl) => {
-            data.push(scl);
+            dt.push(scl);
         })
         return (
             <Table
                 rowKey={record => record.cardholderid}
                 columns={secondLevelColumns}
-                dataSource={data}
+                dataSource={dt}
                 pagination={false}
             />
         )
     }
-
     return (
         <div className='container mt-40 mb-40 overflow-x-auto tableContainer'>
             <Table
-                dataSource={fakeFirstLevelData}
+                dataSource={data}
                 columns={firstLevelColumns}
-                loading={fakeFirstLevelData ? false : true}
+                loading={data ? false : true}
                 pagination={false}
                 expandable={{
                     expandedRowRender: firstExpandedRow,
@@ -145,4 +82,4 @@ const App = () => {
     )
 }
 
-export default App;
+export default OrderHistory;
