@@ -3,8 +3,9 @@ import { Table, InputNumber } from 'antd';
 import axios from 'axios';
 import { mul } from '../service/math';
 import { BASE_URL } from '../api/baseURL';
+import { deleteCartItem, updateQuantity } from '../api/cart';
 
-const Table_product = ({ data, deleteItem }) => {
+const Table_product = ({ data, deleteItem, userId }) => {
     const [tableData, setTableData] = React.useState(data);
 
     React.useEffect(() => {
@@ -18,11 +19,11 @@ const Table_product = ({ data, deleteItem }) => {
                     id: id,
                     quantity: value,
                 }
-                var query = `${BASE_URL}/users/cartitems`;
-                axios.put(query, formData)
-                    .then((respone) => {
-                    })
-                    .catch((error) => { console.log(error) })
+                if (value <= 0) {
+                    deleteCartItem(userId, id);
+                    return;
+                }
+                updateQuantity(formData);
                 return {
                     ...item,
                     quantity: value,

@@ -41,7 +41,7 @@ const Body = ({ authState }) => {
 
     return (
         <div>
-            <div style={{ backgroundColor: '#D9D9D9', padding: '10px'}}>
+            <div style={{ backgroundColor: '#D9D9D9', padding: '10px' }}>
                 <span>Địa chỉ nhận hàng: </span>
                 <span>
                     <a href="">Thay đổi</a>
@@ -49,7 +49,7 @@ const Body = ({ authState }) => {
                 <p>{address}</p>
             </div>
             <div>
-                <Table_product data={items} deleteItem={deleteItem}/>
+                <Table_product data={items} deleteItem={deleteItem} userId={authState.id} />
             </div>
         </div>
     )

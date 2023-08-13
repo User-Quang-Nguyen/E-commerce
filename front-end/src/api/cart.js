@@ -47,3 +47,12 @@ export const deleteCartItem = async (userId, id) => {
         console.error(error);
     }
 }
+
+export const updateQuantity = async (formData) => {
+    try {
+        var query = `${BASE_URL}/users/cartitems`;
+        axios.put(query, formData);
+    } catch (error) {
+        console.log(error)
+    }
+}

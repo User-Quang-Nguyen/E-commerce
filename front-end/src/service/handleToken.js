@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../api/baseURL";
 
-function sleep(ms) {
+export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -30,5 +30,3 @@ export const getToken = () => {
 export const setToken = (token) => {
   localStorage.setItem('token', token);
 }
-
-export default sleep;
