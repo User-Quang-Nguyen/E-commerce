@@ -4,7 +4,7 @@ import axios from 'axios';
 import { mul } from '../service/math';
 import { BASE_URL } from '../api/baseURL';
 
-const Table_product = ({ data }) => {
+const Table_product = ({ data, deleteItem }) => {
     const [tableData, setTableData] = React.useState(data);
 
     React.useEffect(() => {
@@ -74,7 +74,6 @@ const Table_product = ({ data }) => {
         {
             title: 'Thành tiền',
             dataIndex: 'total',
-            // key: 'total',
             render: (text, record) => (
                 mul(record.price, record.quantity)
             )
@@ -83,7 +82,7 @@ const Table_product = ({ data }) => {
             title: 'Action',
             dataIndex: '',
             key: 'x',
-            render: () => <a>Delete</a>,
+            render: (record) => <a onClick={() => deleteItem(record.id)}>Delete</a>,
         },
     ];
 

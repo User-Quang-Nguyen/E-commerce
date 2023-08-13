@@ -48,4 +48,10 @@ router.get("/:userId/cart/order", function (req, res) {
     order_md.getOrderInfo(userId, req, res);
 })
 
+router.delete("/:userId/cart/items/:id", function(req, res){
+    const userId = req.params.userId;
+    const itemId = req.params.id;
+    cart_md.deleteItem(itemId, userId, res);
+})
+
 module.exports = router;

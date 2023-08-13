@@ -87,10 +87,21 @@ async function deleteCart(userId, res) {
     }
 }
 
+async function deleteItem(id, user_id, res){
+    try{
+        var deleteIt = `Delete from cart where id = ${id} and user_id = ${user_id}`;
+        await data_md.getData(deleteIt);
+        res.status(200).json("Success");
+    }catch(e){
+        res.status(500).json("Delete failed");
+    }
+}
+
 module.exports = {
     getCartById: getCartById,
     getTotalMoney: getTotalMoney,
     addToCart: addToCart,
     updateQuantity: updateQuantity,
-    deleteCart: deleteCart
+    deleteCart: deleteCart,
+    deleteItem: deleteItem
 }

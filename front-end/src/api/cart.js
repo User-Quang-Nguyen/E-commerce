@@ -38,3 +38,12 @@ export const getTotalMoney = async (userId) => {
         console.error(error);
     }
 }
+
+export const deleteCartItem = async (userId, id) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/users/${userId}/cart/items/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
