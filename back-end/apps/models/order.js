@@ -1,38 +1,46 @@
-var data_md = require('../service/dataProcess')
+var db = require("../common/database");
+var conn = db.getConnection();
+var queryProcess = require('../utils/queryProcess');
 
-async function insertOrder(userId) {
+function insertOrderTable(form) {
     try {
-        var getData = `select cart.user_id, SUM(product.price*cart.quantity) AS total, current_timestamp() AS created_at
+        const query = `INSERT INTO orders(user_id, total_money, created_at) VALUES(${form.user_id}, ${form.total_money}, ${form.created_at})`;
+        return queryProcess.executeQuery(query);
+    } catch (e) {
+        return e;
+    }
+}
+
+function insertListOrderTable(form) {
+    try {
+        const query = `INSERT INTO list_orders(order_id, product_id, quantity, name, price) VALUES(${form.order_id}, ${form.product_id}, ${form.quantity},"${form.name}", ${form.price})`;
+        return queryProcess.executeQuery(query);
+    } catch (e) {
+        return e;
+    }
+}
+
+function getOrderTableInfo(userId) {
+    try {
+        var orderTableInfo = `select cart.user_id, SUM(product.price*cart.quantity) AS total, current_timestamp() AS created_at
                 from cart inner join product 
                 on cart.product_id = product.id 
-                where cart.user_id=` + userId + ` 
+                where cart.user_id= ${userId}
                 group by cart.user_id`;
-        // get additional data for the order table
-        var result = await data_md.getData(getData);
-        var total_money = result[0].total + result[0].total * 0.1;
-        var time = result[0].created_at.toString();
-
-        // add data to order table
-        var insert = `Insert into orders(user_id, total_money, created_at) 
-                    values(` + result[0].user_id + `,` + total_money + `,` + `"` + time + `"` + `)`;
-        var result1 = await data_md.getData(insert);
-
-        // get additional data for the list_order table
-        var insertListOrder = `select orders.id as order_id, cart.product_id, cart.quantity, product.name, product.price
-                                from cart inner join orders on orders.user_id = cart.user_id
-                                inner join product on cart.product_id = product.id
-                                where orders.id =`+ result1.insertId;
-        var result2 = await data_md.getData(insertListOrder);
-
-        // add data to list_order table
-        result2.map(async (item) => {
-            var query = `Insert into list_orders(order_id, product_id, quantity, name, price)
-                        values(`+ item.order_id + `,` + item.product_id + `,` + item.quantity + `,"` +
-                item.name + `",` + item.price + `)`;
-            var res = await data_md.getData(query);
-        })
+        return queryProcess.executeQuery(orderTableInfo);
     } catch (e) {
-        res.status(500).json("Insert table failed");
+        return e;
+    }
+}
+
+function getListOrderTableInfo(orderId, userId) {
+    try {
+        var listOrderTableInfo = `select ${orderId} as order_id, cart.product_id, cart.quantity, product.name, product.price 
+                                from cart inner join product on cart.product_id = product.id
+                                where user_id = ${userId}`;
+        return queryProcess.executeQuery(listOrderTableInfo);
+    } catch (e) {
+        return e;
     }
 }
 
@@ -54,24 +62,16 @@ async function getOrderInfo(userId, req, res) {
                         ON list_orders.order_id = orders.id
                         WHERE orders.user_id = ${userId}
                         GROUP BY orders.id`;
-        var result = await data_md.getData(getOrderInfo);
-        var data = [];
-        result.map((item) => {
-            newData = {
-                key: item.k,
-                total: item.total,
-                created_at: item.created_at,
-                secondLevel: Array.from(JSON.parse(item.secondLevel))
-            }
-            data.push(newData);
-        })
-        res.status(200).json(data);
+        return queryProcess.executeQuery(getOrderInfo);
     } catch (e) {
-        res.status(500).json("Error");
+        return e;
     }
 }
 
 module.exports = {
-    insertOrder: insertOrder,
+    insertOrderTable: insertOrderTable,
+    insertListOrderTable: insertListOrderTable,
+    getOrderTableInfo: getOrderTableInfo,
+    getListOrderTableInfo: getListOrderTableInfo,
     getOrderInfo: getOrderInfo,
 }

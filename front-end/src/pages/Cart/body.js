@@ -7,7 +7,7 @@ import { message } from "antd";
 const Body = ({ authState }) => {
     const [items, setItems] = useState([]);
     const [address, setAddress] = useState([]);
-    var count = 0;
+    var [count, setCount] = useState(0);
     useEffect(() => {
         const fectch = async () => {
             if (!authState.id) return;
@@ -23,14 +23,13 @@ const Body = ({ authState }) => {
         }
     }, [authState, count]);
 
-    useEffect(() => { }, [items, count])
-
     const deleteItem = async (id) => {
         try {
             const response = await deleteCartItem(authState.id, id);
             if (response === "Success") {
                 message.success("Đã xóa", 2);
-                count++;
+                setCount(count++);
+                console.log(count);
             } else {
                 message.error("Xóa thất bại", 2);
             }
@@ -44,7 +43,7 @@ const Body = ({ authState }) => {
             <div style={{ backgroundColor: '#D9D9D9', padding: '10px' }}>
                 <span>Địa chỉ nhận hàng: </span>
                 <span>
-                    <a href="">Thay đổi</a>
+                    <a href="http://localhost:3000/profile">Thay đổi</a>
                 </span>
                 <p>{address}</p>
             </div>

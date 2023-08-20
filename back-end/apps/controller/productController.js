@@ -1,27 +1,43 @@
 var express = require("express");
 var router = express.Router();
-var product_md = require('../models/product')
+var productModel = require('../models/product');
 
-router.get("/popular", function (req, res) {
-    product_md.getPriorityProducts(req, res);
+router.get("/popular", async function (req, res) {
+    try {
+        let result = await productModel.getPriorityProducts();
+        res.status(200).json(result);
+    } catch (e) {
+        res.status(500).json(e);
+    }
 });
 
-router.get("/normal", function (req, res) {
-    product_md.getNormalProducts(req, res);
+router.get("/normal", async function (req, res) {
+    try {
+        let result = await productModel.getNormalProducts();
+        res.status(200).json(result);
+    } catch (e) {
+        res.status(500).json(e);
+    }
 })
 
-router.get("/category", function (req, res) {
-    product_md.getCategories(req, res);
-});
-
-router.get("/:productId", function (req, res) {
-    var id = req.params.productId;
-    product_md.getProductById(req, res, id);
+router.get("/:productId", async function (req, res) {
+    try {
+        var id = req.params.productId;
+        let result = await productModel.getProductById(id);
+        res.status(200).json(result);
+    } catch (e) {
+        res.status(400).json(e);
+    }
 })
 
-router.get("/:productId/image", function (req, res) {
-    var id = req.params.productId;
-    product_md.getImageOfPro(req, res, id);
+router.get("/:productId/image", async function (req, res) {
+    try {
+        var id = req.params.productId;
+        let result = await productModel.getProductImage(id);
+        res.status(200).json(result);
+    } catch (e) {
+        res.status(400).json(e);
+    }
 })
 
 module.exports = router;

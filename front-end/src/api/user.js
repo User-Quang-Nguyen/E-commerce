@@ -3,11 +3,15 @@ import { BASE_URL } from "./baseURL";
 
 export const getUserById = async (id) => {
     try {
-        const response = await axios.get(`${BASE_URL}/users/${id}`);
+        const response = await axios.get(`${BASE_URL}/users/${id}`, {
+            headers: {
+                Authorization: `${localStorage.getItem('token')}`
+            }
+        });
         const info = response.data;
         return info;
     } catch (e) {
-        console.error(e);
+        return e;
     }
 }
 
@@ -18,8 +22,7 @@ export const getAddress = async (authState) => {
             var addr = response[0].address + ', ' + response[0].city;
             return addr;
         } catch (e) {
-            console.error(e);
-            return '';
+            return e;
         }
     }
 }
@@ -31,6 +34,6 @@ export const getShippingInfo = async (id) => {
             ", " + response[0].address + " " + response[0].city;
         return addr;
     } catch (e) {
-        console.error(e);
+        return e;
     }
 }

@@ -1,7 +1,7 @@
 var db = require('../common/database');
 var conn = db.getConnection();
 
-function getData(query) {
+function executeQuery(query) {
     return new Promise((resolve, reject) => {
         conn.query(query, function (err, result) {
             if (err) reject(err);
@@ -13,16 +13,16 @@ function getData(query) {
 }
 
 function responseData(query, req, res) {
-    getData(query)
+    executeQuery(query)
         .then((data) => {
-            res.status(200).json(data);
+            return data;
         })
         .catch((error) => {
-            res.status(401).json({ success: false, message: error });
+            return false;
         })
 }
 
 module.exports = {
-    getData: getData,
+    executeQuery: executeQuery,
     responseData: responseData
 }

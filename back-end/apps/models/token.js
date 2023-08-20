@@ -9,6 +9,21 @@ function createToken(data) {
     return token;
 }
 
+function authentication(req) {
+    const secret = "jwtsecrect";
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token, secret);
+
+    if (!decoded) {
+        return false;
+    } else {
+        const info = {
+            'userID': decoded.id,
+        };
+        return info;
+    }
+}
+
 async function loginVerification(token) {
     const secretKey = "jwtsecrect";
     try {
@@ -33,4 +48,5 @@ async function loginVerification(token) {
 module.exports = {
     createToken: createToken,
     loginVerification: loginVerification,
+    authentication: authentication
 }

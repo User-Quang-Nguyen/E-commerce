@@ -23,7 +23,6 @@ export function HandleSignUp(data, navigate) {
             navigate('/signin', { replace: true });
         })
         .catch((error) => {
-            console.log(error.response.data);
             message.error('Đăng ký thất bại!', 3);
         });
 }

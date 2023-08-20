@@ -8,8 +8,8 @@ import { HandleSignUp } from '../../api/authen';
 const SignUpForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     gender: ''
@@ -42,8 +42,8 @@ const SignUpForm = () => {
 
           <Form.Item
             label="First Name"
-            name="first_name"
-            value={formData.first_name}
+            name="firstName"
+            value={formData.firstName}
             onChange={changeData}
           >
             <Input />
@@ -51,8 +51,8 @@ const SignUpForm = () => {
 
           <Form.Item
             label="Last Name"
-            name="last_name"
-            value={formData.last_name}
+            name="lastName"
+            value={formData.lastName}
             onChange={changeData}
           >
             <Input />
