@@ -24,7 +24,7 @@ const HomeBody = ({ authState }) => {
             "var": setNormalProduct
         },
         {
-            "link": `${BASE_URL}/products/category`,
+            "link": `${BASE_URL}/products/categories`,
             "var": setCategory
         }
     ]);

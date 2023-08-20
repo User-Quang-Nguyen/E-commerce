@@ -4,8 +4,7 @@ var categoryModel = require('../models/category');
 
 router.get("/categories", async function (req, res) {
     try {
-        let result = await categoryModel.getCategories();
-        console.log(result);
+        var result = await categoryModel.getCategories();
         res.status(200).json(result);
     } catch (e) {
         res.status(500).json(e);

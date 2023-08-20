@@ -4,7 +4,7 @@ var productModel = require('../models/product');
 
 router.get("/popular", async function (req, res) {
     try {
-        let result = await productModel.getPriorityProducts();
+        let result = await productModel.getProductByCategory("Nổi bật");
         res.status(200).json(result);
     } catch (e) {
         res.status(500).json(e);
@@ -13,7 +13,7 @@ router.get("/popular", async function (req, res) {
 
 router.get("/normal", async function (req, res) {
     try {
-        let result = await productModel.getNormalProducts();
+        let result = await productModel.getProductByCategory("Thông dụng");
         res.status(200).json(result);
     } catch (e) {
         res.status(500).json(e);

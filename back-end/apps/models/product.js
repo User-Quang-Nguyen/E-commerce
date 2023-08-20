@@ -1,24 +1,13 @@
 const { json } = require("body-parser");
 var queryProcess = require("../utils/queryProcess");
 
-function getPriorityProducts() {
-    var getPriorityProducts = `select * from product_category 
-                            inner join product on product_category.product_id = product.id
-                            inner join category on product_category.category_id = category.id 
-                            inner join image on product_category.product_id = image.product_id
-                            where category_name = "Nổi bật"
-                            group by product.id;`;
-    return queryProcess.executeQuery(getPriorityProducts);
-}
-
-function getNormalProducts() {
-    var getNormalProducts = `select * from product_category 
-                            inner join product on product_category.product_id = product.id
-                            inner join category on product_category.category_id = category.id 
-                            inner join image on product_category.product_id = image.product_id
-                            where category_name = "Thông dụng"
-                            group by product.id;`;
-    return queryProcess.executeQuery(getNormalProducts);
+function getProductByCategory(category) {
+    var getProduct = `select * from product_category 
+                    inner join product on product_category.product_id = product.id 
+                    inner join category on product_category.category_id = category.id 
+                    inner join image on product_category.product_id = image.product_id 
+                    where category_name = "${category}" group by product.id;`;
+    return queryProcess.executeQuery(getProduct);
 }
 
 function getProductById(id) {
@@ -43,8 +32,7 @@ async function getInfoProduct(item) {
 }
 
 module.exports = {
-    getPriorityProducts: getPriorityProducts,
-    getNormalProducts: getNormalProducts,
+    getProductByCategory: getProductByCategory,
     getProductById: getProductById,
     getProductImage: getProductImage,
     getInfoProduct: getInfoProduct
