@@ -32,7 +32,7 @@ router.post("/login", async function (req, res) {
         password: user.password
     }
     try {
-        var result = await userModel.checkUser(user)
+        var result = await userModel.loginUser(user)
         if (result === "Đăng nhập thất bại") {
             res.status(401).json({ success: false, message: error });
         } else {

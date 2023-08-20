@@ -18,6 +18,7 @@ const Body = ({ authState }) => {
         }
         try {
             fectch();
+            console.log(items);
         } catch (e) {
             console.error(e);
         }

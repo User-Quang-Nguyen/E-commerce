@@ -15,7 +15,7 @@ function registerUser(user) {
     });
 };
 
-async function checkUser(user) {
+async function loginUser(user) {
     var email = user.email.toString();
     var password = user.password;
 
@@ -40,6 +40,6 @@ function getUserById(id) {
 
 module.exports = {
     registerUser: registerUser,
-    checkUser: checkUser,
+    loginUser: loginUser,
     getUserById: getUserById
 }

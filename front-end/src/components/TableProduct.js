@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Table, InputNumber } from 'antd';
 import axios from 'axios';
 import { mul } from '../service/math';
@@ -8,7 +8,7 @@ import { deleteCartItem, updateQuantity } from '../api/cart';
 const Table_product = ({ data, deleteItem, userId }) => {
     const [tableData, setTableData] = React.useState(data);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setTableData(data);
     }, [data]);
 
@@ -21,7 +21,9 @@ const Table_product = ({ data, deleteItem, userId }) => {
                 }
                 if (value <= 0) {
                     deleteCartItem(userId, id);
-                    return;
+                    return {
+                        ...item
+                    }
                 }
                 updateQuantity(formData);
                 return {
@@ -32,7 +34,7 @@ const Table_product = ({ data, deleteItem, userId }) => {
             return item;
         });
 
-        await setTableData(updatedData);
+        setTableData(updatedData);
     };
 
     const columns = [
