@@ -8,6 +8,7 @@ const Body = ({ authState }) => {
     const [items, setItems] = useState([]);
     const [address, setAddress] = useState([]);
     var [count, setCount] = useState(0);
+    var [coun, setCoun] = useState(0);
     useEffect(() => {
         const fectch = async () => {
             if (!authState.id) return;
@@ -18,18 +19,17 @@ const Body = ({ authState }) => {
         }
         try {
             fectch();
-            console.log(items);
         } catch (e) {
             console.error(e);
         }
-    }, [authState, count]);
+    }, [authState, count, coun]);
 
     const deleteItem = async (id) => {
         try {
             const response = await deleteCartItem(authState.id, id);
             if (response === "Success") {
                 message.success("Đã xóa", 2);
-                setCount(count++);
+                setCount(count + 1);
                 console.log(count);
             } else {
                 message.error("Xóa thất bại", 2);
@@ -49,7 +49,7 @@ const Body = ({ authState }) => {
                 <p>{address}</p>
             </div>
             <div>
-                <Table_product data={items} deleteItem={deleteItem} userId={authState.id} />
+                <Table_product data={items} deleteItem={deleteItem} userId={authState.id} coun={coun} setCoun={setCoun} />
             </div>
         </div>
     )

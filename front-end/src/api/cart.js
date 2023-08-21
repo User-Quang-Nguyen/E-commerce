@@ -32,7 +32,8 @@ export const handleGetCartInfo = async (id) => {
 
 export const handleOrder = async (userId) => {
     try {
-        const orderResponse = await axios.post(`${BASE_URL}/users/${userId}/cart/order`, {
+        var order = `${BASE_URL}/users/${userId}/cart/order`;
+        const orderResponse = await axios.post(order, null, {
             headers: {
                 Authorization: `${getToken}`
             }

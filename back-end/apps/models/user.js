@@ -10,8 +10,8 @@ const queryPromise = util.promisify(conn.query).bind(conn);
 function registerUser(user) {
     const query = `INSERT INTO users SET ?`;
     conn.query(query, user, (err, result) => {
-        if (err) return err;
-        return result;
+        if (err) return false;
+        return true;
     });
 };
 

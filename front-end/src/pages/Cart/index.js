@@ -21,7 +21,7 @@ const Cart = ({ authState }) => {
     return (
         <div>
             <Body authState={authState} />
-            <PaymentInfo total={total} ship={20000} vou={-20000} userId={authState.id} />
+            <PaymentInfo total={total} ship={20000} vou={20000} userId={authState.id} />
         </div>
     )
 }

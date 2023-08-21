@@ -4,8 +4,6 @@ import { getUserById } from "../../api/user";
 
 const DisplayInfo = ({ authState }) => {
     const [info, setInfo] = useState({});
-    const timeString = '';
-    const date = '';
     useEffect(() => {
         const fetch = async () => {
             if (!authState.id) return;
@@ -50,12 +48,14 @@ const DisplayInfo = ({ authState }) => {
                 <Form.Item label="Phone">
                     <Input value={info?.phone_number} />
                 </Form.Item>
+                <Form.Item label="Address">
+                    <Input value={info?.address + ',' + info?.city} />
+                </Form.Item>
                 <Form.Item label="Gender">
                     <Select value="Male">
                         <Select.Option value="1">Male</Select.Option>
                         <Select.Option value="0">Female</Select.Option>
                     </Select>
-
                 </Form.Item>
                 <Form.Item label="Birth">
                     <DatePicker />

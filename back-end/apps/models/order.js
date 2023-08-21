@@ -44,7 +44,7 @@ function getListOrderTableInfo(orderId, userId) {
     }
 }
 
-async function getOrderInfo(userId, req, res) {
+async function getOrderInfo(userId) {
     try {
         var getOrderInfo = `SELECT orders.id AS k,
                         orders.total_money AS total,

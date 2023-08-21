@@ -4,7 +4,7 @@ var userModel = require("../models/user");
 var tokenModel = require("../models/token")
 var inputTest = require("../utils/inputTest");
 
-router.post("/signup", function (req, res) {
+router.post("/signup", async function (req, res) {
     var user = req.body;
     user = {
         "email": user.email,
@@ -15,12 +15,9 @@ router.post("/signup", function (req, res) {
     if (!inputTest.inputGmailTest(user.email) || !inputTest.inputTextTest(user.first_name, 30) || !inputTest.inputTextTest(user.last_name, 20)) {
         res.status(400).json({ message: "Wrong input character!" });
     } else {
-        var result = userModel.registerUser(user);
-        if (!result) {
-            res.status(200).json({ message: "Sign up success!" });
-        } else {
-            res.status(400).json({ message: "Sign up fail!" });
-        }
+        var result = await userModel.registerUser(user);
+        if (result) return res.status(400).json({ message: "Sign up fail!" });
+        res.status(200).json({ message: "Sign up success!" });
     }
 });
 

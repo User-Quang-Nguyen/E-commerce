@@ -7,6 +7,7 @@ import { handleOrder } from "../../api/cart";
 const handleChange = (value) => {
     console.log(value);
 };
+const VAT = 0.1;
 
 const PaymentInfo = ({ total, ship, vou, userId }) => {
     const navigate = useNavigate();
@@ -47,7 +48,7 @@ const PaymentInfo = ({ total, ship, vou, userId }) => {
                     <p>Voucher: {vou} VND</p>
                     <span>Tổng thanh toán: </span>
                     <span style={{ color: 'red' }}>
-                        {sum(total, mul(total, 0.1), ship, vou)} VND
+                        {total + total * VAT + ship - vou} VND
                     </span>
                     <p>
                         <Button type="primary" onClick={order} >
