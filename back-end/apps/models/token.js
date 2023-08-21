@@ -14,33 +14,27 @@ function authentication(req) {
     const token = req.headers.authorization;
     const decoded = jwt.verify(token, secret);
 
-    if (!decoded) {
-        return false;
-    } else {
-        const info = {
-            'userID': decoded.id,
-        };
-        return info;
-    }
+    if (!decoded) return false;
+    
+    const info = {
+        'userID': decoded.id,
+    };
+    return info;
 }
 
 async function loginVerification(token) {
     const secretKey = "jwtsecrect";
+
     try {
-        const result = await jwt.verify(token, secretKey, (err, decode) => {
-            if (err) {
-                return "Invalid token";
-            } else {
-                const info = {
-                    'userID': decode.id,
-                };
-                return info;
-            }
-        }
-        )
-        return result;
-    }
-    catch (error) {
+        const decoded = await jwt.verify(token, secretKey);
+
+        if (!decoded) return "Invalid token";
+
+        const info = {
+            'userID': decoded.id,
+        };
+        return info;
+    } catch (error) {
         return "Invalid token";
     }
 }
